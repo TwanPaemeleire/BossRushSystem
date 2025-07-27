@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec44f62fbd09514fa613bbcc98345c7, type: 3}
   m_Name: TestVersion1
   m_EditorClassIdentifier: 
-  Level: 0
-  Health: 0
-  Speed: 0
-  ContactDamage: 0
-  ProjectileDamageMultiplier: 0
-  Attacks:
-  - {fileID: 0}
+  Level: 1
+  Health: 200
+  Speed: 20
+  ContactDamage: 1
+  ProjectileDamageMultiplier: 1
+  ProjectileSpeedMultiplier: 1
+  SpeedMultiplier: 1
+  FireRateMultiplier: 1
+  BossObject: {fileID: 0}

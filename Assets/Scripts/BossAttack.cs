@@ -14,4 +14,5 @@ public abstract class BossAttack : MonoBehaviour
 
     public UnityEvent OnAttackFinished = new UnityEvent();
     public abstract void StartAttack();
+    public abstract void StopAttackEarly();
 }
