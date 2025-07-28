@@ -26,8 +26,20 @@ public class GenericBoss : BossBehavior
     private int _currentAttackIndex = -1;
     private int _currentPhaseIndex = 0;
 
+    private void Start()
+    {
+        StartBossFight();
+    }
+
     public override void StartBossFight()
     {
+        foreach (var phaseAttacks in _phaseAttacks)
+        {
+            foreach (var weightedAttack in phaseAttacks.Attacks)
+            {
+                weightedAttack.Attack.InitializeAttack();
+            }
+        }
         CalculateWeights();
         StartNewAttack();
     }
@@ -58,6 +70,7 @@ public class GenericBoss : BossBehavior
             _currentAttack = _currentAttack.NextGuaranteedAttack;
             _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
             _currentAttack.StartAttack();
+            Debug.Log($"Starting guaranteed attack: {_currentAttack.name}");
             return;
         }
 
@@ -72,6 +85,9 @@ public class GenericBoss : BossBehavior
             {
                 _currentAttack = weightedAttack.Attack;
                 _currentAttackIndex = i;
+                _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
+                _currentAttack.StartAttack();
+                Debug.Log($"Starting new attack: {_currentAttack.name}");
                 break;
             }
         }

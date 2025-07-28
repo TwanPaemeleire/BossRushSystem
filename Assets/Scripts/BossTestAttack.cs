@@ -16,10 +16,15 @@ public class BossTestAttack : BossAttack
     List<Coroutine> _shootingCoroutines = new List<Coroutine>();
     List<float> _shootingAngles = new List<float>();
 
+    public override void InitializeAttack()
+    {
+        ProjectilePool.Instance.AddProjectilePool(ProjectileType.a, _projectilePrefab, 200);
+    }
+
     public override void StartAttack()
     {
         int randomDirection = Random.Range(0, 2);
-        _rotatingClockWise = randomDirection == 0 ? true : false;
+        _rotatingClockWise = randomDirection == 0;
 
         _shooterAngleInterval = 360.0f / (float)_amountOfShooters;
         for (int shooterIdx = 0; shooterIdx < _amountOfShooters; ++shooterIdx)
@@ -67,8 +72,8 @@ public class BossTestAttack : BossAttack
             Vector2 direction = new Vector2(Mathf.Cos(_shootingAngles[shooterIdx] * Mathf.Deg2Rad), Mathf.Sin(_shootingAngles[shooterIdx] * Mathf.Deg2Rad));
 
             var bulletObj = ProjectilePool.Instance.GetProjectile(ProjectileType.a);
+            bulletObj.transform.position = transform.position;
             bulletObj.transform.right = direction.normalized;
-            //bulletObj.GetComponent<BulletComponent>().SetShooterTag(transform.tag);
             yield return new WaitForSeconds(_bulletShootDelay);
         }
     }

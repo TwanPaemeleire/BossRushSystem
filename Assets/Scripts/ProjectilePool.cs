@@ -9,15 +9,11 @@ public enum ProjectileType
 
 public class ProjectilePool : MonoBehaviour
 {
-    private Dictionary<ProjectileType, ObjectPool<GameObject>> _projectilePool;
+    private Dictionary<ProjectileType, ObjectPool<GameObject>> _projectilePool = new Dictionary<ProjectileType, ObjectPool<GameObject>>();
     public static ProjectilePool Instance;
     private void Awake()
     {
         Instance = this;
-    }
-    private void Start()
-    {
-        _projectilePool = new Dictionary<ProjectileType, ObjectPool<GameObject>>();
     }
 
     public void AddProjectilePool(ProjectileType projectileType, GameObject prefab, int initialSize = 10)
@@ -63,7 +59,7 @@ public class ProjectilePool : MonoBehaviour
     private void OnProjectileGet(GameObject projectile)
     {
         projectile.SetActive(true);
-        // call init method of projectile component
+        projectile.GetComponent<TestProjectile>().Initialize();
     }
 
     private void OnProjectileRelease(GameObject projectile)
