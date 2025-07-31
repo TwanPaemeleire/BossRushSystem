@@ -459,12 +459,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
       propertyPath: _bulletShootDelay
-      value: 0.02
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
       propertyPath: _projectilePrefab
       value: 
       objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
+      propertyPath: _rotationSpeedApplyTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7214008251429577766, guid: b903023ecf5b64d419412079c2307146, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

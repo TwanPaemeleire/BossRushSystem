@@ -16,10 +16,15 @@ public class ProjectilePool : MonoBehaviour
         Instance = this;
     }
 
-    private ObjectPool<GameObject> CreateProjectilePool(ProjectileType projectileType, GameObject prefab)
+    private ObjectPool<GameObject> CreateProjectilePool(GameObject prefab, Transform parent)
     {
         return new ObjectPool<GameObject>(
-            () => Instantiate(prefab),
+            () =>
+            {
+                var projectileObject = Instantiate(prefab);
+                projectileObject.transform.SetParent(parent, true);
+                return projectileObject;
+            },
             OnProjectileGet,
             OnProjectileRelease,
             OnProjectileDestroy,
@@ -30,7 +35,9 @@ public class ProjectilePool : MonoBehaviour
     {
         if(!_projectilePools.TryGetValue(projectileType, out  ObjectPool<GameObject> pool))
         {
-            pool = CreateProjectilePool(projectileType, prefab);
+            var owner = new GameObject($"{projectileType} Projectile Container");
+            owner.transform.SetParent(transform);
+            pool = CreateProjectilePool(prefab, owner.transform);
             _projectilePools.Add(projectileType, pool);
         }
         int amountToCreate = Mathf.Max(0, desiredSize - pool.CountAll);
