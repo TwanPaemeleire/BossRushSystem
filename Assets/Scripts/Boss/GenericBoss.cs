@@ -26,16 +26,21 @@ public class GenericBoss : BossBehavior
     private int _currentAttackIndex = -1;
     private int _currentPhaseIndex = 0;
 
+    private BossHealth _health;
+
     private void Start()
     {
+        _health = GetComponent<BossHealth>();
+        _health.InitializeHealth(_bossVersionData);
+        _health.OnPhaseTransition.AddListener(OnPhaseChangeHealthReached);
         StartBossFight();
     }
 
     public override void StartBossFight()
     {
-        foreach (var phaseAttacks in _phaseAttacks)
+        foreach(var phaseAttacks in _phaseAttacks)
         {
-            foreach (var weightedAttack in phaseAttacks.Attacks)
+            foreach(var weightedAttack in phaseAttacks.Attacks)
             {
                 weightedAttack.Attack.InitializeAttack();
             }
@@ -46,10 +51,10 @@ public class GenericBoss : BossBehavior
 
     private void CalculateWeights()
     {
-        foreach (var phaseAttacks in _phaseAttacks)
+        foreach(var phaseAttacks in _phaseAttacks)
         {
             phaseAttacks.WeightSum = 0;
-            foreach (var weightedAttack in phaseAttacks.Attacks)
+            foreach(var weightedAttack in phaseAttacks.Attacks)
             {
                 phaseAttacks.WeightSum += weightedAttack.Weight;
             }

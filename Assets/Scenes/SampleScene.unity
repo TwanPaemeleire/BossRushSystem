@@ -350,6 +350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 917964009}
   - component: {fileID: 917964010}
+  - component: {fileID: 917964011}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -366,7 +367,7 @@ Transform:
   m_GameObject: {fileID: 917964008}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7.15, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -393,6 +394,30 @@ MonoBehaviour:
     WeightSum: 0
   _delayBeforeFirstAttack: 2
   _delayBeforeFirstAttackAfterPhaseTransition: 1
+--- !u!114 &917964011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917964008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ef361ca4032cd449c52c646155ea69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amountOfAdditionalPhases: 1
+  _phaseTriggerPercentages:
+  - 0.7
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPhaseTransition:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1151376784
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,26 +473,6 @@ PrefabInstance:
     - target: {fileID: 447915671497883705, guid: b903023ecf5b64d419412079c2307146, type: 3}
       propertyPath: m_Name
       value: TestAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
-      propertyPath: _rotationSpeed
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
-      propertyPath: _amountOfShooters
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
-      propertyPath: _bulletShootDelay
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
-      propertyPath: _projectilePrefab
-      value: 
-      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-    - target: {fileID: 4449245055703813320, guid: b903023ecf5b64d419412079c2307146, type: 3}
-      propertyPath: _rotationSpeedApplyTime
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7214008251429577766, guid: b903023ecf5b64d419412079c2307146, type: 3}
       propertyPath: m_LocalPosition.x

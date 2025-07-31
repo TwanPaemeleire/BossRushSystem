@@ -50,9 +50,9 @@ MonoBehaviour:
   OnAttackFinished:
     m_PersistentCalls:
       m_Calls: []
-  _projectilePrefab: {fileID: 0}
-  _amountOfShooters: 4
-  _bulletShootDelay: 0.2
+  _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+  _amountOfShooters: 6
+  _bulletShootDelay: 0.1
   _amountOffFullRotations: 1
-  _rotationSpeed: 1
-  _rotationSpeedApplyTime: 2
+  _rotationSpeed: 45
+  _rotationSpeedApplyTime: 0
