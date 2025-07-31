@@ -18,7 +18,7 @@ public class BossTestAttack : BossAttack
 
     public override void InitializeAttack()
     {
-        ProjectilePool.Instance.AddProjectilePool(ProjectileType.a, _projectilePrefab, 200);
+        ProjectilePool.Instance.InitializeAndPreWarmPool(ProjectileType.a, _projectilePrefab, 200);
     }
 
     public override void StartAttack()

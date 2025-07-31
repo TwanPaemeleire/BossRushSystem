@@ -9,36 +9,49 @@ public enum ProjectileType
 
 public class ProjectilePool : MonoBehaviour
 {
-    private Dictionary<ProjectileType, ObjectPool<GameObject>> _projectilePool = new Dictionary<ProjectileType, ObjectPool<GameObject>>();
+    private Dictionary<ProjectileType, ObjectPool<GameObject>> _projectilePools = new Dictionary<ProjectileType, ObjectPool<GameObject>>();
     public static ProjectilePool Instance;
     private void Awake()
     {
         Instance = this;
     }
 
-    public void AddProjectilePool(ProjectileType projectileType, GameObject prefab, int initialSize = 10)
+    private ObjectPool<GameObject> CreateProjectilePool(ProjectileType projectileType, GameObject prefab)
     {
-        if (!_projectilePool.ContainsKey(projectileType))
+        return new ObjectPool<GameObject>(
+            () => Instantiate(prefab),
+            OnProjectileGet,
+            OnProjectileRelease,
+            OnProjectileDestroy,
+            true, 0, int.MaxValue);
+    }
+
+    public void InitializeAndPreWarmPool(ProjectileType projectileType, GameObject prefab, int desiredSize)
+    {
+        if(!_projectilePools.TryGetValue(projectileType, out  ObjectPool<GameObject> pool))
         {
-            ObjectPool<GameObject> pool = new ObjectPool<GameObject>(
-                () => Instantiate(prefab),
-                OnProjectileGet,
-                OnProjectileRelease,
-                OnProjectileDestroy,
-                false, initialSize, initialSize);
-            _projectilePool.Add(projectileType, pool);
+            pool = CreateProjectilePool(projectileType, prefab);
+            _projectilePools.Add(projectileType, pool);
         }
-        else
+        int amountToCreate = Mathf.Max(0, desiredSize - pool.CountAll);
+        if (amountToCreate == 0) return;
+        List<GameObject> tempObjectList = new List<GameObject>(amountToCreate);
+        for (int i = 0; i < amountToCreate; i++)
         {
-            Debug.LogWarning($"Projectile pool for type {projectileType} already exists.");
+            GameObject projectileObject = pool.Get();
+            tempObjectList.Add(projectileObject);
+        }
+        foreach (GameObject projectileObject in tempObjectList)
+        {
+            pool.Release(projectileObject);
         }
     }
 
     public GameObject GetProjectile(ProjectileType projectileType)
     {
-        if(_projectilePool.ContainsKey(projectileType))
+        if(_projectilePools.ContainsKey(projectileType))
         {
-            return _projectilePool[projectileType].Get();
+            return _projectilePools[projectileType].Get();
         }
         Debug.LogWarning($"Projectile type {projectileType} not found in pool.");
         return null;
@@ -46,9 +59,9 @@ public class ProjectilePool : MonoBehaviour
 
     public void ReleaseProjectile(ProjectileType projectileType, GameObject projectile)
     {
-        if (_projectilePool.ContainsKey(projectileType))
+        if (_projectilePools.ContainsKey(projectileType))
         {
-            _projectilePool[projectileType].Release(projectile);
+            _projectilePools[projectileType].Release(projectile);
         }
         else
         {
