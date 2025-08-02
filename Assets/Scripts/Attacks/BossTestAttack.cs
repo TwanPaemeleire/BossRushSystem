@@ -38,7 +38,7 @@ public class BossTestAttack : BossAttack
 
     public override void StopAttackEarly()
     {
-        
+        StopAllCoroutines();
     }
 
     IEnumerator ShootWhileRotating(float startAngle, int shooterIdx)
@@ -62,7 +62,7 @@ public class BossTestAttack : BossAttack
         }
 
         _shootingAngles.Clear();
-        OnAttackFinished?.Invoke();
+        OnAttackFinished.Invoke();
         StopAllCoroutines();
     }
 

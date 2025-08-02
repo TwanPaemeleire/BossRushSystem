@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 [System.Serializable]
@@ -63,16 +64,11 @@ public class GenericBoss : BossBehavior
 
     private void StartNewAttack()
     {
-        if(_currentAttack != null)
-        {
-            _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
-            _currentAttack.StopAttackEarly();
-        }
-
         // If there's a guaranteed next attack, use that one
         if(_currentAttack != null && _currentAttack.NextGuaranteedAttack != null)
         {
             _currentAttack = _currentAttack.NextGuaranteedAttack;
+            _currentAttackIndex = GetIndexOfAttackInPhaseAttacks(_currentAttack);
             _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
             _currentAttack.StartAttack();
             Debug.Log($"Starting guaranteed attack: {_currentAttack.name}");
@@ -86,6 +82,7 @@ public class GenericBoss : BossBehavior
         {
             var weightedAttack = _phaseAttacks[_currentPhaseIndex].Attacks[i];
             currentWeightSum += weightedAttack.Weight;
+            
             if (randomNumberInWeightRange < currentWeightSum && (i != _currentAttackIndex || _currentAttack.CanExecuteConsecutive))
             {
                 _currentAttack = weightedAttack.Attack;
@@ -110,6 +107,24 @@ public class GenericBoss : BossBehavior
 
     private void OnAttackFinished()
     {
+        if (_currentAttack != null)
+        {
+            _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
+            _currentAttack.StopAttackEarly();
+        }
         Invoke(nameof(StartNewAttack), _currentAttack.DelayAfterAttack);
+    }
+
+    private int GetIndexOfAttackInPhaseAttacks(BossAttack attack)
+    {
+        int amountOfPhaseAttacks = _phaseAttacks[_currentPhaseIndex].Attacks.Count;
+        for(int attackIdx = 0; attackIdx < amountOfPhaseAttacks; ++attackIdx)
+        {
+            if (_phaseAttacks[_currentPhaseIndex].Attacks[attackIdx].Attack == attack)
+            {
+                return attackIdx;
+            }
+        }
+        return -1;
     }
 }

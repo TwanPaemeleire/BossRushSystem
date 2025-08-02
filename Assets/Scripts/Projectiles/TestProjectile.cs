@@ -2,17 +2,22 @@ using UnityEngine;
 
 public class TestProjectile : MonoBehaviour
 {
-    [SerializeField] private float _maxLifetime = 3.0f;
     [SerializeField] float _speed = 6f;
     [SerializeField] private ProjectileType _projectileType;
 
+    private bool _beingReturnedToPool = false;
     private float _speedMultiplier = 1f;
     public float speedMultiplier { get { return _speedMultiplier; }  set { _speedMultiplier = value; } }
     public void Initialize()
     {
-        Invoke(nameof(DestroyBullet), _maxLifetime);
+        _beingReturnedToPool = false;
     }
-    
+
+    private void OnBecameInvisible()
+    {
+        DestroyBullet();
+    }
+
     private void DestroyBullet()
     {
         ProjectilePool.Instance.ReleaseProjectile(_projectileType, this.gameObject);

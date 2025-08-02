@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public abstract class BossAttack : MonoBehaviour
 {
+    [Header("Base Attack Settings")]
     [SerializeField] private bool _canExecuteConsecutive = false;
     public bool CanExecuteConsecutive { get { return _canExecuteConsecutive; } }
 
