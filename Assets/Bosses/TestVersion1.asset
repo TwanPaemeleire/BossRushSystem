@@ -17,7 +17,7 @@ MonoBehaviour:
   HealthMultiplier: 1.5
   ContactDamage: 1
   ProjectileDamageMultiplier: 1
-  ProjectileSpeedMultiplier: 1
+  ProjectileSpeedMultiplier: 0.6
   SpeedMultiplier: 1
   FireRateMultiplier: 1
   BossObject: {fileID: 3130395684313142010, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}

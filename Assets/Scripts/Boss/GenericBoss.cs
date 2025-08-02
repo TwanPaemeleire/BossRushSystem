@@ -42,7 +42,7 @@ public class GenericBoss : BossBehavior
         {
             foreach(var weightedAttack in phaseAttacks.Attacks)
             {
-                weightedAttack.Attack.InitializeAttack();
+                weightedAttack.Attack.InitializeAttack(_bossVersionData);
             }
         }
         CalculateWeights();

@@ -12,8 +12,20 @@ public abstract class BossAttack : MonoBehaviour
     [SerializeField] private float _delayAfterAttack = 1.0f;
     public float DelayAfterAttack { get { return _delayAfterAttack; } }
 
+    protected float _projectileSpeedMultiplier;
+    protected float _projectileDamageMultiplier;
+
     public UnityEvent OnAttackFinished = new UnityEvent();
     public abstract void StartAttack();
     public abstract void StopAttackEarly();
-    public virtual void InitializeAttack() { }
+    public virtual void InitializeAttack(BossVersionData bossVersionData)
+    {
+        _projectileSpeedMultiplier = bossVersionData.ProjectileSpeedMultiplier;
+        _projectileDamageMultiplier = bossVersionData.ProjectileDamageMultiplier;
+    }
+    public virtual void InitializeAttack(BossVersionData bossVersionData, BossPartData bossPartData)
+    {
+        _projectileSpeedMultiplier = bossVersionData.ProjectileSpeedMultiplier * bossPartData.ProjectileSpeedMultiplier;
+        _projectileDamageMultiplier = bossVersionData.ProjectileDamageMultiplier * bossPartData.ProjectileDamageMultiplier;
+    }
 }

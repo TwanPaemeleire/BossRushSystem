@@ -7,11 +7,14 @@ public class BossPartBehavior : MonoBehaviour
     [SerializeField] private List<BossAttack> _attacks;
     [SerializeField] private float _delayBeforeFirstAttack = 2f;
 
+    private BossVersionData _bossVersionData;
+
     private BossAttack _currentAttack = null;
     private int _currentAttackIndex = -1;
 
     public void InitializePart(BossVersionData versionData, BossHealth mainBossHealth)
     {
+        _bossVersionData = versionData;
         BossPartHealth bossPartHealth = GetComponent<BossPartHealth>();
         bossPartHealth.InitializeHealth(versionData, mainBossHealth, _bossPartData);
     }
@@ -20,7 +23,7 @@ public class BossPartBehavior : MonoBehaviour
     {
         foreach (BossAttack attack in _attacks)
         {
-            attack.InitializeAttack();
+            attack.InitializeAttack(_bossVersionData, _bossPartData);
         }
         Invoke(nameof(StartNewAttack), _delayBeforeFirstAttack);
     }

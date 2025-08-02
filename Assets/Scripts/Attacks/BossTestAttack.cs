@@ -16,8 +16,9 @@ public class BossTestAttack : BossAttack
     List<Coroutine> _shootingCoroutines = new List<Coroutine>();
     List<float> _shootingAngles = new List<float>();
 
-    public override void InitializeAttack()
+    public override void InitializeAttack(BossVersionData bossVersionData)
     {
+        base.InitializeAttack(bossVersionData);
         ProjectilePool.Instance.InitializeAndPreWarmPool(ProjectileType.a, _projectilePrefab, 200);
     }
 
@@ -74,6 +75,7 @@ public class BossTestAttack : BossAttack
             var bulletObj = ProjectilePool.Instance.GetProjectile(ProjectileType.a);
             bulletObj.transform.position = transform.position;
             bulletObj.transform.right = direction.normalized;
+            bulletObj.GetComponent<TestProjectile>().speedMultiplier = _projectileSpeedMultiplier;
             yield return new WaitForSeconds(_bulletShootDelay);
         }
     }

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec44f62fbd09514fa613bbcc98345c7, type: 3}
   m_Name: TestVersion2
   m_EditorClassIdentifier: 
-  Level: 0
-  Health: 0
-  Speed: 0
-  ContactDamage: 0
-  ProjectileDamageMultiplier: 0
-  Attacks:
-  - {fileID: 0}
+  Level: 1
+  HealthData: {fileID: 11400000, guid: 66143e4936cc2bb49bc3c4346b30172a, type: 2}
+  HealthMultiplier: 1.5
+  ContactDamage: 1
+  ProjectileDamageMultiplier: 1
+  ProjectileSpeedMultiplier: 4
+  SpeedMultiplier: 1
+  FireRateMultiplier: 1
+  BossObject: {fileID: 3130395684313142010, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
