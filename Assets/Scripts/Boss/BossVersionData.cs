@@ -5,8 +5,8 @@ using UnityEngine;
 public class BossVersionData : ScriptableObject
 {
     public int Level;
-    public float Health;
-    public float Speed;
+    public BossHealthData HealthData;
+    public float HealthMultiplier;
     public float ContactDamage;
     public float ProjectileDamageMultiplier;
     public float ProjectileSpeedMultiplier;

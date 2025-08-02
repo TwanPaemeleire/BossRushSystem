@@ -5,9 +5,7 @@ using UnityEngine.Events;
 
 public class BossHealth : MonoBehaviour
 {
-    [SerializeField] private int _amountOfAdditionalPhases;
-    [SerializeField] private List<float> _phaseTriggerPercentages;
-
+    BossHealthData _bossHealthData;
     private float _maxHealth;
     private float _currentHealth;
     private int _currentPhase = -1;
@@ -17,24 +15,12 @@ public class BossHealth : MonoBehaviour
     public UnityEvent OnPhaseTransition = new UnityEvent();
     public UnityEvent OnDeath = new UnityEvent();
 
-    private void OnValidate()
+    public void InitializeHealth(BossHealthData bossHealthData, float healthMultiplier)
     {
-        if (_phaseTriggerPercentages == null) _phaseTriggerPercentages = new List<float>();
-        while (_phaseTriggerPercentages.Count < _amountOfAdditionalPhases)
-        {
-            _phaseTriggerPercentages.Add(0f);
-        }
-        while (_phaseTriggerPercentages.Count > _amountOfAdditionalPhases)
-        {
-            _phaseTriggerPercentages.RemoveAt(_phaseTriggerPercentages.Count - 1);
-        }
-    }
-
-    public void InitializeHealth(BossVersionData bossVersionData)
-    {
-        _maxHealth = bossVersionData.Health;
+        _bossHealthData = bossHealthData;
+        _maxHealth = _bossHealthData.Health * healthMultiplier;
         _currentHealth = _maxHealth;
-        if(_amountOfAdditionalPhases > 0)
+        if(_bossHealthData.PhaseTriggerPercentages.Count > 0)
         {
             _currentPhase = 0;
             CalculateHealthToTriggerNextPhase();
@@ -59,6 +45,6 @@ public class BossHealth : MonoBehaviour
 
     private void CalculateHealthToTriggerNextPhase()
     {
-        _healthToTriggerNextPhase = _maxHealth * _phaseTriggerPercentages[_currentPhase];
+        _healthToTriggerNextPhase = _maxHealth * _bossHealthData.PhaseTriggerPercentages[_currentPhase];
     }
 }

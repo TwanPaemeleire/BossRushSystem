@@ -31,7 +31,7 @@ public class GenericBoss : BossBehavior
     private void Start()
     {
         _health = GetComponent<BossHealth>();
-        _health.InitializeHealth(_bossVersionData);
+        _health.InitializeHealth(_bossVersionData.HealthData, _bossVersionData.HealthMultiplier);
         _health.OnPhaseTransition.AddListener(OnPhaseChangeHealthReached);
         StartBossFight();
     }

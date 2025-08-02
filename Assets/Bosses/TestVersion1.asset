@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: TestVersion1
   m_EditorClassIdentifier: 
   Level: 1
-  Health: 200
-  Speed: 20
+  HealthData: {fileID: 11400000, guid: 66143e4936cc2bb49bc3c4346b30172a, type: 2}
+  HealthMultiplier: 1.5
   ContactDamage: 1
   ProjectileDamageMultiplier: 1
   ProjectileSpeedMultiplier: 1
   SpeedMultiplier: 1
   FireRateMultiplier: 1
-  BossObject: {fileID: 0}
+  BossObject: {fileID: 3130395684313142010, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
