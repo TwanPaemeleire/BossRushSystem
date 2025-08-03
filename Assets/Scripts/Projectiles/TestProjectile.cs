@@ -7,7 +7,10 @@ public class TestProjectile : MonoBehaviour
 
     private bool _beingReturnedToPool = false;
     private float _speedMultiplier = 1f;
-    public float speedMultiplier { get { return _speedMultiplier; }  set { _speedMultiplier = value; } }
+    public float speedMultiplier { get { return _speedMultiplier; } set { _speedMultiplier = value; } }
+
+    private GameObject _originalPrefab;
+    public GameObject OriginalPrefab {set{_originalPrefab = value;}}
     public void Initialize()
     {
         _beingReturnedToPool = false;
@@ -20,7 +23,7 @@ public class TestProjectile : MonoBehaviour
 
     private void DestroyBullet()
     {
-        ProjectilePool.Instance.ReleaseProjectile(_projectileType, this.gameObject);
+        ProjectilePool.Instance.ReleaseProjectile(_originalPrefab, this.gameObject);
     }
 
     private void Update()

@@ -9,7 +9,7 @@ public enum ProjectileType
 
 public class ProjectilePool : MonoBehaviour
 {
-    private Dictionary<ProjectileType, ObjectPool<GameObject>> _projectilePools = new Dictionary<ProjectileType, ObjectPool<GameObject>>();
+    private Dictionary<GameObject, ObjectPool<GameObject>> _projectilePools = new Dictionary<GameObject, ObjectPool<GameObject>>();
     public static ProjectilePool Instance;
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class ProjectilePool : MonoBehaviour
             {
                 var projectileObject = Instantiate(prefab);
                 projectileObject.transform.SetParent(parent, true);
+                projectileObject.GetComponent<TestProjectile>().OriginalPrefab = prefab;
                 return projectileObject;
             },
             OnProjectileGet,
@@ -31,14 +32,14 @@ public class ProjectilePool : MonoBehaviour
             true, 0, int.MaxValue);
     }
 
-    public void InitializeAndPreWarmPool(ProjectileType projectileType, GameObject prefab, int desiredSize)
+    public void InitializeAndPreWarmPool(GameObject prefab, int desiredSize)
     {
-        if(!_projectilePools.TryGetValue(projectileType, out  ObjectPool<GameObject> pool))
+        if(!_projectilePools.TryGetValue(prefab, out  ObjectPool<GameObject> pool))
         {
-            var owner = new GameObject($"{projectileType} Projectile Container");
+            var owner = new GameObject($"{prefab} Projectile Container");
             owner.transform.SetParent(transform);
             pool = CreateProjectilePool(prefab, owner.transform);
-            _projectilePools.Add(projectileType, pool);
+            _projectilePools.Add(prefab, pool);
         }
         int amountToCreate = Mathf.Max(0, desiredSize - pool.CountAll);
         if (amountToCreate == 0) return;
@@ -54,21 +55,21 @@ public class ProjectilePool : MonoBehaviour
         }
     }
 
-    public GameObject GetProjectile(ProjectileType projectileType)
+    public GameObject GetProjectile(GameObject prefab)
     {
-        if(_projectilePools.ContainsKey(projectileType))
+        if(_projectilePools.ContainsKey(prefab))
         {
-            return _projectilePools[projectileType].Get();
+            return _projectilePools[prefab].Get();
         }
-        Debug.LogWarning($"Projectile type {projectileType} not found in pool.");
+        Debug.LogWarning($"Projectile type {prefab} not found in pool.");
         return null;
     }
 
-    public void ReleaseProjectile(ProjectileType projectileType, GameObject projectile)
+    public void ReleaseProjectile(GameObject prefab, GameObject projectile)
     {
-        if (_projectilePools.ContainsKey(projectileType))
+        if (_projectilePools.ContainsKey(prefab))
         {
-            _projectilePools[projectileType].Release(projectile);
+            _projectilePools[prefab].Release(projectile);
         }
         else
         {

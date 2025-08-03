@@ -19,7 +19,7 @@ public class BossTestAttack : BossAttack
     public override void InitializeAttack(BossVersionData bossVersionData)
     {
         base.InitializeAttack(bossVersionData);
-        ProjectilePool.Instance.InitializeAndPreWarmPool(ProjectileType.a, _projectilePrefab, 200);
+        ProjectilePool.Instance.InitializeAndPreWarmPool(_projectilePrefab, 330);
     }
 
     public override void StartAttack()
@@ -72,7 +72,7 @@ public class BossTestAttack : BossAttack
         {
             Vector2 direction = new Vector2(Mathf.Cos(_shootingAngles[shooterIdx] * Mathf.Deg2Rad), Mathf.Sin(_shootingAngles[shooterIdx] * Mathf.Deg2Rad));
 
-            var bulletObj = ProjectilePool.Instance.GetProjectile(ProjectileType.a);
+            var bulletObj = ProjectilePool.Instance.GetProjectile(_projectilePrefab);
             bulletObj.transform.position = transform.position;
             bulletObj.transform.right = direction.normalized;
             bulletObj.GetComponent<TestProjectile>().speedMultiplier = _projectileSpeedMultiplier;
