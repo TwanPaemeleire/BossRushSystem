@@ -9,50 +9,23 @@ public enum ProjectileType
 
 public class ProjectilePool : MonoBehaviour
 {
-    private Dictionary<GameObject, ObjectPool<GameObject>> _projectilePools = new Dictionary<GameObject, ObjectPool<GameObject>>();
+    private Dictionary<GameObject, DynamicProjectilePool> _projectilePools = new Dictionary<GameObject, DynamicProjectilePool>();
     public static ProjectilePool Instance;
     private void Awake()
     {
-        Instance = this;
-    }
-
-    private ObjectPool<GameObject> CreateProjectilePool(GameObject prefab, Transform parent)
-    {
-        return new ObjectPool<GameObject>(
-            () =>
-            {
-                var projectileObject = Instantiate(prefab);
-                projectileObject.transform.SetParent(parent, true);
-                projectileObject.GetComponent<TestProjectile>().OriginalPrefab = prefab;
-                return projectileObject;
-            },
-            OnProjectileGet,
-            OnProjectileRelease,
-            OnProjectileDestroy,
-            true, 0, int.MaxValue);
+        Instance = this; // Will change in future to have a MonoSingleton script
     }
 
     public void InitializeAndPreWarmPool(GameObject prefab, int desiredSize)
     {
-        if(!_projectilePools.TryGetValue(prefab, out  ObjectPool<GameObject> pool))
+        if(!_projectilePools.TryGetValue(prefab, out DynamicProjectilePool pool))
         {
-            var owner = new GameObject($"{prefab} Projectile Container");
-            owner.transform.SetParent(transform);
-            pool = CreateProjectilePool(prefab, owner.transform);
+            var owner = new GameObject($"{prefab.name} Pool");
+            pool = owner.AddComponent<DynamicProjectilePool>();
+            pool.Initialize(prefab, owner.transform);
             _projectilePools.Add(prefab, pool);
         }
-        int amountToCreate = Mathf.Max(0, desiredSize - pool.CountAll);
-        if (amountToCreate == 0) return;
-        List<GameObject> tempObjectList = new List<GameObject>(amountToCreate);
-        for (int i = 0; i < amountToCreate; i++)
-        {
-            GameObject projectileObject = pool.Get();
-            tempObjectList.Add(projectileObject);
-        }
-        foreach (GameObject projectileObject in tempObjectList)
-        {
-            pool.Release(projectileObject);
-        }
+        pool.PreWarmPool(desiredSize);
     }
 
     public GameObject GetProjectile(GameObject prefab)
@@ -75,21 +48,5 @@ public class ProjectilePool : MonoBehaviour
         {
             Destroy(projectile);
         }
-    }
-
-    private void OnProjectileGet(GameObject projectile)
-    {
-        projectile.SetActive(true);
-        projectile.GetComponent<TestProjectile>().Initialize();
-    }
-
-    private void OnProjectileRelease(GameObject projectile)
-    {
-        projectile.SetActive(false);
-    }
-
-    private void OnProjectileDestroy(GameObject projectile)
-    {
-        Destroy(projectile);
     }
 }
