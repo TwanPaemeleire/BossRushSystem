@@ -16,13 +16,29 @@ public class WeightedAttack
     public int Weight;
 }
 
+[System.Serializable]
+public class PoolToModifyData
+{
+    public GameObject Prefab;
+    public int Size;
+}
+
+[System.Serializable]
+public class PoolsToModifyAfterPhaseChange
+{
+    public List<PoolToModifyData> PoolsToModify;
+}
+
 public class GenericBoss : BossBehavior
 {
     [SerializeField] private BossVersionData _bossVersionData;
     public BossVersionData BossVersionData { get { return _bossVersionData; } }
     [SerializeField] private List<PhaseAttacks> _phaseAttacks;
-    [SerializeField] private float _delayBeforeFirstAttack = 2f;
-    [SerializeField] private float _delayBeforeFirstAttackAfterPhaseTransition = 1f;
+    [SerializeField] private List<PoolToModifyData> _poolsToCreate;
+    [SerializeField] private List<PoolsToModifyAfterPhaseChange> _poolsToModifyAfterPhaseChange;
+    [SerializeField] private float _delayBeforeFirstAttack = 2.0f;
+    [SerializeField] private float _delayBeforeFirstAttackAfterPhaseTransition = 1.0f;
+    [SerializeField] private float _delayAfterPhaseTransitionToBeginPoolTrimming = 2.0f;
     private BossAttack _currentAttack = null;
     private int _currentAttackIndex = -1;
     private int _currentPhaseIndex = 0;
@@ -39,6 +55,11 @@ public class GenericBoss : BossBehavior
 
     public override void StartBossFight()
     {
+        foreach (var poolToCreate in _poolsToCreate)
+        {
+            ProjectilePool.Instance.InitializeAndPreWarmPool(poolToCreate.Prefab, poolToCreate.Size);
+        }
+
         foreach(var phaseAttacks in _phaseAttacks)
         {
             foreach(var weightedAttack in phaseAttacks.Attacks)
@@ -47,7 +68,7 @@ public class GenericBoss : BossBehavior
             }
         }
         CalculateWeights();
-        StartNewAttack();
+        Invoke(nameof(StartNewAttack), _delayBeforeFirstAttack);
     }
 
     private void CalculateWeights()
@@ -83,7 +104,7 @@ public class GenericBoss : BossBehavior
             var weightedAttack = _phaseAttacks[_currentPhaseIndex].Attacks[i];
             currentWeightSum += weightedAttack.Weight;
             
-            if (randomNumberInWeightRange < currentWeightSum && (i != _currentAttackIndex || _currentAttack.CanExecuteConsecutive))
+            if (randomNumberInWeightRange < currentWeightSum && (_currentAttack == null || i != _currentAttackIndex || _currentAttack.CanExecuteConsecutive))
             {
                 _currentAttack = weightedAttack.Attack;
                 _currentAttackIndex = i;
@@ -97,11 +118,23 @@ public class GenericBoss : BossBehavior
 
     private void OnPhaseChangeHealthReached()
     {
+        Invoke(nameof(ApplyPoolChangesAfterTransition), _delayAfterPhaseTransitionToBeginPoolTrimming);
         ++_currentPhaseIndex;
         if(_currentAttack != null)
         {
             _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
             _currentAttack.StopAttackEarly();
+            _currentAttack = null;
+        }
+        Invoke(nameof(StartNewAttack), _delayBeforeFirstAttackAfterPhaseTransition);
+    }
+
+    private void ApplyPoolChangesAfterTransition()
+    {
+        Debug.Log("Starting pool trimming");
+        foreach (var poolToModify in _poolsToModifyAfterPhaseChange[_currentPhaseIndex - 1].PoolsToModify)
+        {
+            ProjectilePool.Instance.RequestTrimToSizeOverTime(poolToModify.Prefab, poolToModify.Size);
         }
     }
 

@@ -49,4 +49,10 @@ public class ProjectilePool : MonoBehaviour
             Destroy(projectile);
         }
     }
+
+    public void RequestTrimToSizeOverTime(GameObject prefab, int desiredSize)
+    {
+        if (!_projectilePools.TryGetValue(prefab, out DynamicProjectilePool pool)) return;
+        pool.RequestTrimToSizeOverTime(desiredSize);
+    }
 }

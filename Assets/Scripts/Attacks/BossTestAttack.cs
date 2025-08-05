@@ -16,12 +16,6 @@ public class BossTestAttack : BossAttack
     List<Coroutine> _shootingCoroutines = new List<Coroutine>();
     List<float> _shootingAngles = new List<float>();
 
-    public override void InitializeAttack(BossVersionData bossVersionData)
-    {
-        base.InitializeAttack(bossVersionData);
-        ProjectilePool.Instance.InitializeAndPreWarmPool(_projectilePrefab, 330);
-    }
-
     public override void StartAttack()
     {
         int randomDirection = Random.Range(0, 2);

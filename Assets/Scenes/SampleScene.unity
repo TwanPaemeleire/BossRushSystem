@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab104619414cdb4e9a2d0454515a0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canExecuteConsecutive: 0
+  _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 79669106}
   _delayAfterAttack: 1
   OnAttackFinished:
@@ -533,11 +533,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   m_PrefabInstance: {fileID: 966295915}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &966295917 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-  m_PrefabInstance: {fileID: 966295915}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1151376784
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,11 +758,35 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: cdf78805f5f685442be4b026de5f747d, type: 2}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToCreate.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToCreate.Array.data[0].Size
+      value: 990
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToCreate.Array.data[1].Size
+      value: 990
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToCreate.Array.data[0].Prefab
+      value: 
+      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToCreate.Array.data[1].Prefab
+      value: 
+      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToModifyAfterPhaseChange.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[0].Attacks.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.size
@@ -792,15 +811,35 @@ PrefabInstance:
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.data[0].Attack
       value: 
-      objectReference: {fileID: 79669106}
+      objectReference: {fileID: 1978702050}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.data[0].Weight
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.data[1].Attack
+      value: 
+      objectReference: {fileID: 79669106}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.data[1].Weight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToModifyAfterPhaseChange.Array.data[0].PoolsToModify.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToModifyAfterPhaseChange.Array.data[0].PoolsToModify.Array.data[0].Size
+      value: 330
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _poolsToModifyAfterPhaseChange.Array.data[0].PoolsToModify.Array.data[0].Prefab
+      value: 
+      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
     - target: {fileID: 9202740869397292856, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _projectilePrefab
       value: 
-      objectReference: {fileID: 966295917}
+      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
     - target: {fileID: 9202740869397292856, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _nextGuaranteedAttack
       value: 
