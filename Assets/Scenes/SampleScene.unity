@@ -152,6 +152,7 @@ Transform:
   - {fileID: 946052221}
   - {fileID: 1436870206}
   - {fileID: 1827167877}
+  - {fileID: 1361464099}
   m_Father: {fileID: 1653748486}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &79669106
@@ -173,14 +174,16 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _subAttacks:
+  - {fileID: 1361464100}
   - {fileID: 946052222}
   - {fileID: 1436870207}
   - {fileID: 1827167878}
   _delayBeforeAttackExecutions:
   - 0
+  - 0
   - 0.2
   - 0.2
-  _attackToFinishToBeDone: {fileID: 946052222}
+  _attackToFinishToBeDone: {fileID: 1361464100}
 --- !u!1 &257312434
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +523,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &832665037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 832665038}
+  m_Layer: 0
+  m_Name: TestPlayerTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &832665038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832665037}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.5, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &917964009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5103227559274840795, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
@@ -751,6 +785,62 @@ MonoBehaviour:
   _amountOffFullRotations: 2
   _rotationSpeed: 180
   _rotationSpeedApplyTime: 0
+--- !u!1 &1361464098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1361464099}
+  - component: {fileID: 1361464100}
+  m_Layer: 0
+  m_Name: RowSubAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1361464099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361464098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 79669105}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1361464100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361464098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be6a83366efd1942ae5b4097f210067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canExecuteConsecutive: 0
+  _nextGuaranteedAttack: {fileID: 0}
+  _delayAfterAttack: 1
+  OnAttackFinished:
+    m_PersistentCalls:
+      m_Calls: []
+  _projectileToShoot: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+  _playerTransform: {fileID: 832665038}
+  _projectilesPerRow: 10
+  _delayBetweenProjectilesInRow: 0.04
+  _amountOfRowsToShoot: 5
+  _delayBetweenRows: 1.7
 --- !u!1 &1436870205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1150,3 +1240,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 3138883143458009461}
   - {fileID: 1151376785}
+  - {fileID: 832665038}
