@@ -28,7 +28,7 @@ public class ProjectilePool : MonoBehaviour
         pool.PreWarmPool(desiredSize);
     }
 
-    public GameObject GetProjectile(GameObject prefab, float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
+    public Projectile GetProjectile(GameObject prefab, float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
     {
         if(_projectilePools.ContainsKey(prefab))
         {
@@ -38,7 +38,7 @@ public class ProjectilePool : MonoBehaviour
         return null;
     }
 
-    public void ReleaseProjectile(GameObject prefab, GameObject projectile)
+    public void ReleaseProjectile(GameObject prefab, Projectile projectile)
     {
         if (_projectilePools.ContainsKey(prefab))
         {

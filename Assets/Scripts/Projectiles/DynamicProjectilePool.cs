@@ -7,8 +7,8 @@ public class DynamicProjectilePool : MonoBehaviour
 {
     private GameObject _prefab;
     private Transform _ownderTransform;
-    private Stack<GameObject> _inactiveObjects = new Stack<GameObject>();
-    private HashSet<GameObject> _allObjects = new HashSet<GameObject>();
+    private Stack<Projectile> _inactiveInstances = new Stack<Projectile>();
+    private HashSet<Projectile> _allInstances = new HashSet<Projectile>();
 
     private Coroutine _trimCoroutine;
     private int _sizeToCurrentlyTrimTo = -1;
@@ -22,7 +22,7 @@ public class DynamicProjectilePool : MonoBehaviour
 
     public void PreWarmPool(int desiredSize)
     {
-        Stack<GameObject> tempStack = new Stack<GameObject>(desiredSize);
+        Stack<Projectile> tempStack = new Stack<Projectile>(desiredSize);
         for(int i = 0; i < desiredSize; ++i)
         {
             tempStack.Push(Get(1.0f, 1.0f, Vector2.zero));
@@ -36,35 +36,35 @@ public class DynamicProjectilePool : MonoBehaviour
     private void CreateInstance()
     {
         var projectileObject = Instantiate(_prefab);
-        projectileObject.GetComponent<Projectile>().OriginalPrefab = _prefab;
         projectileObject.SetActive(false);
         projectileObject.transform.SetParent(_ownderTransform);
-        _allObjects.Add(projectileObject);
-        _inactiveObjects.Push(projectileObject);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.OriginalPrefab = _prefab;
+        _allInstances.Add(projectile);
+        _inactiveInstances.Push(projectile);
     }
 
-    public GameObject Get(float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
+    public Projectile Get(float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
     {
-        if (_inactiveObjects.Count == 0) CreateInstance();
-        var projectileObject = _inactiveObjects.Pop();
-        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        if (_inactiveInstances.Count == 0) CreateInstance();
+        var projectile = _inactiveInstances.Pop();
         projectile.SpeedMultiplier = speedMultiplier;
         projectile.DamageMultiplier = damageMultiplier;
         projectile.ShotDirection = shotDirection;
         projectile.Initialize();
-        projectileObject.SetActive(true);
-        return projectileObject;
+        projectile.gameObject.SetActive(true);
+        return projectile;
     }
 
-    public void Release(GameObject projectileObject)
+    public void Release(Projectile projectile)
     {
-        projectileObject.SetActive(false);
-        _inactiveObjects.Push(projectileObject);
+        projectile.gameObject.SetActive(false);
+        _inactiveInstances.Push(projectile);
     }
 
     public void RequestTrimToSizeOverTime(int desiredSize)
     {
-        if(desiredSize > _allObjects.Count)
+        if(desiredSize > _allInstances.Count)
         {
             Debug.LogWarning("Attempted to trim pool to largr size than current size");
             return;
@@ -75,19 +75,19 @@ public class DynamicProjectilePool : MonoBehaviour
 
     public void ClearAndDestroyAllObjects()
     {
-        foreach (var projectileObject in _allObjects)
+        foreach (var projectile in _allInstances)
         {
-            Destroy(projectileObject);
+            Destroy(projectile.gameObject);
         }
-        _allObjects.Clear();
-        _inactiveObjects.Clear();
+        _allInstances.Clear();
+        _inactiveInstances.Clear();
         if(_trimCoroutine != null) StopCoroutine(_trimCoroutine);
     }
 
     private IEnumerator TrimToSizeOverTime()
     {
-        int amountOfTimesToFullTrim = (_allObjects.Count - _sizeToCurrentlyTrimTo) / _trimmedObjectsPerFrame;
-        int amountPartialTrim = (_allObjects.Count - _sizeToCurrentlyTrimTo) % _trimmedObjectsPerFrame;
+        int amountOfTimesToFullTrim = (_allInstances.Count - _sizeToCurrentlyTrimTo) / _trimmedObjectsPerFrame;
+        int amountPartialTrim = (_allInstances.Count - _sizeToCurrentlyTrimTo) % _trimmedObjectsPerFrame;
         for(int trimCounter = 0; trimCounter < amountOfTimesToFullTrim; ++trimCounter)
         {
             RemoveTrimAmount(_trimmedObjectsPerFrame);
@@ -101,17 +101,17 @@ public class DynamicProjectilePool : MonoBehaviour
     {
         for(int i = 0; i < amount; ++i)
         {
-            if(_inactiveObjects.Count > 0)
+            if(_inactiveInstances.Count > 0)
             {
-                var objectToDestroy = _inactiveObjects.Pop();
-                _allObjects.Remove(objectToDestroy);
-                Destroy(objectToDestroy);
+                var projectileToDestroy = _inactiveInstances.Pop();
+                _allInstances.Remove(projectileToDestroy);
+                Destroy(projectileToDestroy.gameObject);
             }
             else
             {
-                var objectToDestroy = _allObjects.First();
-                _allObjects.Remove(objectToDestroy);
-                Destroy(objectToDestroy);
+                var projectileToDestroy = _allInstances.First();
+                _allInstances.Remove(projectileToDestroy);
+                Destroy(projectileToDestroy.gameObject);
             }
         }
     }

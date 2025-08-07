@@ -21,6 +21,6 @@ public abstract class Projectile : MonoBehaviour
 
     private void DestroyBullet()
     {
-        ProjectilePool.Instance.ReleaseProjectile(_originalPrefab, this.gameObject);
+        ProjectilePool.Instance.ReleaseProjectile(_originalPrefab, this);
     }
 }
