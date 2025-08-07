@@ -167,12 +167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab104619414cdb4e9a2d0454515a0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 79669106}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _subAttacks:
   - {fileID: 1361464100}
   - {fileID: 946052222}
@@ -228,12 +228,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 12
   _bulletShootDelay: 0.1
@@ -424,12 +424,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab104619414cdb4e9a2d0454515a0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 543081131}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _subAttacks:
   - {fileID: 1206209169}
   - {fileID: 257312436}
@@ -603,88 +603,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 6
   _bulletShootDelay: 0.1
   _amountOffFullRotations: 2
   _rotationSpeed: 45
   _rotationSpeedApplyTime: 0
---- !u!1001 &966295915
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 917964009}
-    m_Modifications:
-    - target: {fileID: 3203792231327282956, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: _speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_Name
-      value: TestProjectiles
-      objectReference: {fileID: 0}
-    - target: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
---- !u!4 &966295916 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4911290165154320892, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
-  m_PrefabInstance: {fileID: 966295915}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1151376784
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,12 +703,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 12
   _bulletShootDelay: 0.1
@@ -829,12 +759,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be6a83366efd1942ae5b4097f210067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 0
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectileToShoot: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _playerTransform: {fileID: 832665038}
   _projectilesPerRow: 10
@@ -885,12 +815,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 6
   _bulletShootDelay: 0.1
@@ -943,12 +873,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0613310c6f3aefe429edaca42a65ea1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 1653748487}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _variationAttacks:
   - Attack: {fileID: 79669106}
     Weight: 5
@@ -998,12 +928,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 6
   _bulletShootDelay: 0.1
@@ -1054,12 +984,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4302e9d1187044abfcc0336ea1675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnActionFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _canExecuteConsecutive: 1
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  OnAttackFinished:
-    m_PersistentCalls:
-      m_Calls: []
   _projectilePrefab: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
   _amountOfShooters: 12
   _bulletShootDelay: 0.1
@@ -1134,6 +1064,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: cdf78805f5f685442be4b026de5f747d, type: 2}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1162,12 +1096,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.data[0].Attacks.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[0].Attacks.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[1].Attacks.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.data[0].Attacks.Array.data[0].Attack
+      value: 
+      objectReference: {fileID: 1653748487}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.data[0].Attacks.Array.data[0].Weight
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.data[0].Attacks.Array.data[1].Attack
+      value: 
+      objectReference: {fileID: 1978702050}
+    - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: _phasesData.Array.data[0].Attacks.Array.data[1].Weight
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _phaseAttacks.Array.data[0].Attacks.Array.data[0].Attack
@@ -1224,9 +1178,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5103227559274840795, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 966295916}
     - targetCorrespondingSourceObject: {fileID: 5103227559274840795, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1653748486}

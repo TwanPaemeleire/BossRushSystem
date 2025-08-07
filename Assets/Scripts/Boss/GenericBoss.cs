@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class PhaseData
@@ -33,25 +35,31 @@ public class PoolsToModifyAfterPhaseChange
 public class GenericBoss : BossBehavior
 {
     [SerializeField] private BossVersionData _bossVersionData;
-    public BossVersionData BossVersionData { get { return _bossVersionData; } }
-    [SerializeField] private List<PhaseData> _phaseAttacks;
+    [SerializeField] private List<PhaseData> _phasesData;
+    [SerializeField] private BossAction _bossDeathAction;
     [SerializeField] private List<PoolToModifyData> _poolsToCreate;
     [SerializeField] private List<PoolsToModifyAfterPhaseChange> _poolsToModifyAfterPhaseChange;
     [SerializeField] private float _delayBeforeFirstAttack = 2.0f;
     [SerializeField] private float _delayBeforeFirstAttackAfterPhaseTransition = 1.0f;
     [SerializeField] private float _delayAfterPhaseTransitionToBeginPoolTrimming = 2.0f;
+    public BossVersionData BossVersionData { get { return _bossVersionData; } }
+
     private BossAttack _currentAttack = null;
     private BossAction _currentPhaseTransitionAction = null;
     private int _currentAttackIndex = -1;
     private int _currentPhaseIndex = 0;
-
     private BossHealth _health;
+
+    public UnityEvent OnStartingAttack = new UnityEvent();
+    public UnityEvent OnEndingAttack = new UnityEvent();
+    public UnityEvent OnBossFightFinished = new UnityEvent();
 
     private void Start()
     {
         _health = GetComponent<BossHealth>();
         _health.InitializeHealth(_bossVersionData.HealthData, _bossVersionData.HealthMultiplier);
         _health.OnPhaseTransition.AddListener(OnPhaseChangeHealthReached);
+        _health.OnDeath.AddListener(OnDeath);
         StartBossFight();
     }
 
@@ -62,7 +70,7 @@ public class GenericBoss : BossBehavior
             ProjectilePool.Instance.InitializeAndPreWarmPool(poolToCreate.Prefab, poolToCreate.Size);
         }
 
-        foreach(var phaseAttacks in _phaseAttacks)
+        foreach(var phaseAttacks in _phasesData)
         {
             foreach(var weightedAttack in phaseAttacks.Attacks)
             {
@@ -75,7 +83,7 @@ public class GenericBoss : BossBehavior
 
     private void CalculateWeights()
     {
-        foreach(var phaseData in _phaseAttacks)
+        foreach(var phaseData in _phasesData)
         {
             phaseData.WeightSum = 0;
             foreach(var weightedAttack in phaseData.Attacks)
@@ -99,11 +107,11 @@ public class GenericBoss : BossBehavior
         }
 
         // Look for new random attack, based on the weights
-        int randomNumberInWeightRange = Random.Range(0, _phaseAttacks[_currentPhaseIndex].WeightSum);
+        int randomNumberInWeightRange = Random.Range(0, _phasesData[_currentPhaseIndex].WeightSum);
         int currentWeightSum = 0;
-        for (int i = 0; i < _phaseAttacks[_currentPhaseIndex].Attacks.Count; ++i)
+        for (int i = 0; i < _phasesData[_currentPhaseIndex].Attacks.Count; ++i)
         {
-            var weightedAttack = _phaseAttacks[_currentPhaseIndex].Attacks[i];
+            var weightedAttack = _phasesData[_currentPhaseIndex].Attacks[i];
             currentWeightSum += weightedAttack.Weight;
             
             if (randomNumberInWeightRange < currentWeightSum && (_currentAttack == null || i != _currentAttackIndex || _currentAttack.CanExecuteConsecutive))
@@ -120,13 +128,22 @@ public class GenericBoss : BossBehavior
 
     private void OnPhaseChangeHealthReached()
     {
-        if (_currentPhaseTransitionAction != null)
+        if (_currentPhaseTransitionAction)
         {
+            _currentPhaseTransitionAction.OnActionFinished.RemoveListener(OnPhaseChangeHealthReached);
             _currentPhaseTransitionAction.StopAction();
         }
-        _currentPhaseTransitionAction = _phaseAttacks[_currentPhaseIndex].PhaseEndAction;
-        _currentPhaseTransitionAction.OnActionFinished.AddListener(OnPhaseChangeActionFinished);
-        _currentPhaseTransitionAction.StartAction();
+
+        _currentPhaseTransitionAction = _phasesData[_currentPhaseIndex].PhaseEndAction;
+        if(_currentPhaseTransitionAction)
+        {
+            _currentPhaseTransitionAction.OnActionFinished.AddListener(OnPhaseChangeActionFinished);
+            _currentPhaseTransitionAction.StartAction();
+        }
+        else
+        {
+            Invoke(nameof(StartNewAttack), _delayBeforeFirstAttackAfterPhaseTransition);
+        }
 
         Invoke(nameof(ApplyPoolChangesAfterTransition), _delayAfterPhaseTransitionToBeginPoolTrimming);
         ++_currentPhaseIndex;
@@ -168,12 +185,32 @@ public class GenericBoss : BossBehavior
         Invoke(nameof(StartNewAttack), _delayBeforeFirstAttackAfterPhaseTransition);
     }
 
+    private void OnDeath()
+    {
+        if(_bossDeathAction != null)
+        {
+            _bossDeathAction.OnActionFinished.AddListener(OnDeathActionFinished);
+            _bossDeathAction.StartAction();
+        }
+        else
+        {
+            OnBossFightFinished.Invoke();
+        }
+    }
+
+    private void OnDeathActionFinished()
+    {
+        _bossDeathAction.OnActionFinished.RemoveListener(OnDeathActionFinished);
+        _bossDeathAction.StopAction();
+        OnBossFightFinished.Invoke();
+    }
+
     private int GetIndexOfAttackInPhaseAttacks(BossAttack attack)
     {
-        int amountOfPhaseAttacks = _phaseAttacks[_currentPhaseIndex].Attacks.Count;
+        int amountOfPhaseAttacks = _phasesData[_currentPhaseIndex].Attacks.Count;
         for(int attackIdx = 0; attackIdx < amountOfPhaseAttacks; ++attackIdx)
         {
-            if (_phaseAttacks[_currentPhaseIndex].Attacks[attackIdx].Attack == attack)
+            if (_phasesData[_currentPhaseIndex].Attacks[attackIdx].Attack == attack)
             {
                 return attackIdx;
             }
