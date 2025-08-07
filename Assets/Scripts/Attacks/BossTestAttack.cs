@@ -66,10 +66,8 @@ public class BossTestAttack : BossAttack
         {
             Vector2 direction = new Vector2(Mathf.Cos(_shootingAngles[shooterIdx] * Mathf.Deg2Rad), Mathf.Sin(_shootingAngles[shooterIdx] * Mathf.Deg2Rad));
 
-            var bulletObj = ProjectilePool.Instance.GetProjectile(_projectilePrefab);
+            var bulletObj = ProjectilePool.Instance.GetProjectile(_projectilePrefab, ProjectileSpeedMultiplier, ProjectileDamageMultiplier, direction.normalized);
             bulletObj.transform.position = transform.position;
-            bulletObj.transform.right = direction.normalized;
-            bulletObj.GetComponent<TestProjectile>().speedMultiplier = _projectileSpeedMultiplier;
             yield return new WaitForSeconds(_bulletShootDelay);
         }
     }

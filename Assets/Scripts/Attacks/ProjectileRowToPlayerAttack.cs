@@ -28,18 +28,15 @@ public class ProjectileRowToPlayerAttack : BossAttack
             Vector3 playerPosition = _playerTransform.position;
             for(int projectileIdx = 0; projectileIdx < _projectilesPerRow; ++projectileIdx)
             {
-                var projectileObj = ProjectilePool.Instance.GetProjectile(_projectileToShoot);
-                TestProjectile projectile = projectileObj.GetComponent<TestProjectile>();
-                projectile.transform.position = transform.position;
-                projectile.transform.right = (playerPosition - transform.position).normalized;
-                projectile.speedMultiplier = _projectileSpeedMultiplier;
+                Vector2 shotDirection = (playerPosition - transform.position).normalized;
+                var projectileObj = ProjectilePool.Instance.GetProjectile(_projectileToShoot, ProjectileSpeedMultiplier, ProjectileDamageMultiplier, shotDirection);
+                projectileObj.transform.position = transform.position;
                 if (projectileIdx == _projectilesPerRow -1) break;
                 yield return new WaitForSeconds(_delayBetweenProjectilesInRow);
             }
             if(rowIdx == _amountOfRowsToShoot - 1) break;
             yield return new WaitForSeconds(_delayBetweenRows);
         }
-
         OnActionFinished.Invoke();
     }
 }

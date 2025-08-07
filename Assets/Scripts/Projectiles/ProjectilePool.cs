@@ -28,11 +28,11 @@ public class ProjectilePool : MonoBehaviour
         pool.PreWarmPool(desiredSize);
     }
 
-    public GameObject GetProjectile(GameObject prefab)
+    public GameObject GetProjectile(GameObject prefab, float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
     {
         if(_projectilePools.ContainsKey(prefab))
         {
-            return _projectilePools[prefab].Get();
+            return _projectilePools[prefab].Get(speedMultiplier, damageMultiplier, shotDirection);
         }
         Debug.LogWarning($"Projectile type {prefab} not found in pool.");
         return null;

@@ -13,8 +13,10 @@ public abstract class BossAttack : BossAction
     [SerializeField] private float _delayAfterAttack = 1.0f;
     public float DelayAfterAttack { get { return _delayAfterAttack; } }
 
-    protected float _projectileSpeedMultiplier;
-    protected float _projectileDamageMultiplier;
+    private float _projectileSpeedMultiplier;
+    public float ProjectileSpeedMultiplier { get { return _projectileSpeedMultiplier; }}
+    private float _projectileDamageMultiplier;
+    public float ProjectileDamageMultiplier { get { return _projectileDamageMultiplier; }}
 
     public virtual void InitializeAttack(BossVersionData bossVersionData)
     {
