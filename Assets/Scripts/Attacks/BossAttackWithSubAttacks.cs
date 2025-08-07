@@ -33,18 +33,18 @@ public class BossAttackWithSubAttacks : BossAttack
        }
     }
 
-    public override void StartAttack()
+    public override void StartAction()
     {
-        _attackToFinishToBeDone.OnAttackFinished.AddListener(OnSubAttackFinished);
+        _attackToFinishToBeDone.OnActionFinished.AddListener(OnSubAttackFinished);
         _attackCoroutine = StartCoroutine(StartAttacks());
     }
 
-    public override void StopAttackEarly()
+    public override void StopAction()
     {
-         _attackToFinishToBeDone.OnAttackFinished.RemoveListener(OnSubAttackFinished);
+         _attackToFinishToBeDone.OnActionFinished.RemoveListener(OnSubAttackFinished);
         foreach (var attack in _subAttacks)
         {
-            attack.StopAttackEarly();
+            attack.StopAction();
         }
     }
 
@@ -53,12 +53,12 @@ public class BossAttackWithSubAttacks : BossAttack
         for(int attackIdx = 0; attackIdx < _subAttacks.Count; ++attackIdx)
         {
             yield return new WaitForSeconds(_delayBeforeAttackExecutions[attackIdx]);
-            _subAttacks[attackIdx].StartAttack();
+            _subAttacks[attackIdx].StartAction();
         }
     }
 
     private void OnSubAttackFinished()
     {
-        OnAttackFinished.Invoke();
+        OnActionFinished.Invoke();
     }
 }

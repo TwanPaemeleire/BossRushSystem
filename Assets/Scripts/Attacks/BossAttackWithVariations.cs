@@ -5,7 +5,7 @@ public class BossAttackWithVariations : BossAttack
 {
     [SerializeField] private List<WeightedAttack> _variationAttacks;
     private BossAttack _selectedAttack;
-    public override void StartAttack()
+    public override void StartAction()
     {
         int totalWeight = CalculateTotalWeight();
         int randomNumberInWeightRange = Random.Range(0, totalWeight);
@@ -18,8 +18,8 @@ public class BossAttackWithVariations : BossAttack
             if (randomNumberInWeightRange < currentWeightSum)
             {
                 _selectedAttack = weightedAttack.Attack;
-                _selectedAttack.OnAttackFinished.AddListener(OnSelectedAttackFinished);
-                _selectedAttack.StartAttack();
+                _selectedAttack.OnActionFinished.AddListener(OnSelectedAttackFinished);
+                _selectedAttack.StartAction();
                 break;
             }
         }
@@ -33,9 +33,9 @@ public class BossAttackWithVariations : BossAttack
         }
     }
 
-    public override void StopAttackEarly()
+    public override void StopAction()
     {
-        _selectedAttack.StopAttackEarly();
+        _selectedAttack.StopAction();
     }
 
     private int CalculateTotalWeight()
@@ -51,7 +51,7 @@ public class BossAttackWithVariations : BossAttack
 
     private void OnSelectedAttackFinished()
     {
-        _selectedAttack.OnAttackFinished.RemoveListener(OnSelectedAttackFinished);
-        OnAttackFinished.Invoke();
+        _selectedAttack.OnActionFinished.RemoveListener(OnSelectedAttackFinished);
+        OnActionFinished.Invoke();
     }
 }

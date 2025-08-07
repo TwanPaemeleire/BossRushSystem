@@ -32,16 +32,16 @@ public class BossPartBehavior : MonoBehaviour
     {
         if (_currentAttack != null)
         {
-            _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
-            _currentAttack.StopAttackEarly();
+            _currentAttack.OnActionFinished.RemoveListener(OnAttackFinished);
+            _currentAttack.StopAction();
         }
 
         // If there's a guaranteed next attack, use that one
         if (_currentAttack != null && _currentAttack.NextGuaranteedAttack != null)
         {
             _currentAttack = _currentAttack.NextGuaranteedAttack;
-            _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
-            _currentAttack.StartAttack();
+            _currentAttack.OnActionFinished.AddListener(OnAttackFinished);
+            _currentAttack.StartAction();
             return;
         }
 
@@ -52,8 +52,8 @@ public class BossPartBehavior : MonoBehaviour
         } while (randomAttack == _currentAttackIndex && !_attacks[_currentAttackIndex].CanExecuteConsecutive);
         _currentAttackIndex = randomAttack;
         _currentAttack = _attacks[_currentAttackIndex];
-        _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
-        _currentAttack.StartAttack();
+        _currentAttack.OnActionFinished.AddListener(OnAttackFinished);
+        _currentAttack.StartAction();
 
     }
 

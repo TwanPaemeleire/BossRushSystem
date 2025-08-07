@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BossAttack : MonoBehaviour
+public abstract class BossAttack : BossAction
 {
     [Header("Base Attack Settings")]
     [SerializeField] private bool _canExecuteConsecutive = false;
@@ -16,9 +16,6 @@ public abstract class BossAttack : MonoBehaviour
     protected float _projectileSpeedMultiplier;
     protected float _projectileDamageMultiplier;
 
-    public UnityEvent OnAttackFinished = new UnityEvent();
-    public abstract void StartAttack();
-    public abstract void StopAttackEarly();
     public virtual void InitializeAttack(BossVersionData bossVersionData)
     {
         _projectileSpeedMultiplier = bossVersionData.ProjectileSpeedMultiplier;

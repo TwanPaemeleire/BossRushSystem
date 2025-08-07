@@ -11,12 +11,12 @@ public class ProjectileRowToPlayerAttack : BossAttack
     [SerializeField] private int _amountOfRowsToShoot = 5;
     [SerializeField] private float _delayBetweenRows = 0.5f;
 
-    public override void StartAttack()
+    public override void StartAction()
     {
         StartCoroutine(ShootProjectileRows());
     }
 
-    public override void StopAttackEarly()
+    public override void StopAction()
     {
         StopAllCoroutines();
     }
@@ -40,6 +40,6 @@ public class ProjectileRowToPlayerAttack : BossAttack
             yield return new WaitForSeconds(_delayBetweenRows);
         }
 
-        OnAttackFinished.Invoke();
+        OnActionFinished.Invoke();
     }
 }

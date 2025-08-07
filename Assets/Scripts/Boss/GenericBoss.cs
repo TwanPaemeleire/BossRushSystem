@@ -3,10 +3,11 @@ using UnityEditor.UIElements;
 using UnityEngine;
 
 [System.Serializable]
-public class PhaseAttacks
+public class PhaseData
 {
     public List<WeightedAttack> Attacks;
     [HideInInspector] public int WeightSum;
+    public BossAction PhaseEndAction;
 }
 
 [System.Serializable]
@@ -33,13 +34,14 @@ public class GenericBoss : BossBehavior
 {
     [SerializeField] private BossVersionData _bossVersionData;
     public BossVersionData BossVersionData { get { return _bossVersionData; } }
-    [SerializeField] private List<PhaseAttacks> _phaseAttacks;
+    [SerializeField] private List<PhaseData> _phaseAttacks;
     [SerializeField] private List<PoolToModifyData> _poolsToCreate;
     [SerializeField] private List<PoolsToModifyAfterPhaseChange> _poolsToModifyAfterPhaseChange;
     [SerializeField] private float _delayBeforeFirstAttack = 2.0f;
     [SerializeField] private float _delayBeforeFirstAttackAfterPhaseTransition = 1.0f;
     [SerializeField] private float _delayAfterPhaseTransitionToBeginPoolTrimming = 2.0f;
     private BossAttack _currentAttack = null;
+    private BossAction _currentPhaseTransitionAction = null;
     private int _currentAttackIndex = -1;
     private int _currentPhaseIndex = 0;
 
@@ -73,12 +75,12 @@ public class GenericBoss : BossBehavior
 
     private void CalculateWeights()
     {
-        foreach(var phaseAttacks in _phaseAttacks)
+        foreach(var phaseData in _phaseAttacks)
         {
-            phaseAttacks.WeightSum = 0;
-            foreach(var weightedAttack in phaseAttacks.Attacks)
+            phaseData.WeightSum = 0;
+            foreach(var weightedAttack in phaseData.Attacks)
             {
-                phaseAttacks.WeightSum += weightedAttack.Weight;
+                phaseData.WeightSum += weightedAttack.Weight;
             }
         }
     }
@@ -90,8 +92,8 @@ public class GenericBoss : BossBehavior
         {
             _currentAttack = _currentAttack.NextGuaranteedAttack;
             _currentAttackIndex = GetIndexOfAttackInPhaseAttacks(_currentAttack);
-            _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
-            _currentAttack.StartAttack();
+            _currentAttack.OnActionFinished.AddListener(OnAttackFinished);
+            _currentAttack.StartAction();
             Debug.Log($"Starting guaranteed attack: {_currentAttack.name}");
             return;
         }
@@ -108,8 +110,8 @@ public class GenericBoss : BossBehavior
             {
                 _currentAttack = weightedAttack.Attack;
                 _currentAttackIndex = i;
-                _currentAttack.OnAttackFinished.AddListener(OnAttackFinished);
-                _currentAttack.StartAttack();
+                _currentAttack.OnActionFinished.AddListener(OnAttackFinished);
+                _currentAttack.StartAction();
                 Debug.Log($"Starting new attack: {_currentAttack.name}");
                 break;
             }
@@ -118,15 +120,22 @@ public class GenericBoss : BossBehavior
 
     private void OnPhaseChangeHealthReached()
     {
+        if (_currentPhaseTransitionAction != null)
+        {
+            _currentPhaseTransitionAction.StopAction();
+        }
+        _currentPhaseTransitionAction = _phaseAttacks[_currentPhaseIndex].PhaseEndAction;
+        _currentPhaseTransitionAction.OnActionFinished.AddListener(OnPhaseChangeActionFinished);
+        _currentPhaseTransitionAction.StartAction();
+
         Invoke(nameof(ApplyPoolChangesAfterTransition), _delayAfterPhaseTransitionToBeginPoolTrimming);
         ++_currentPhaseIndex;
         if(_currentAttack != null)
         {
-            _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
-            _currentAttack.StopAttackEarly();
+            _currentAttack.OnActionFinished.RemoveListener(OnAttackFinished);
+            _currentAttack.StopAction();
             _currentAttack = null;
         }
-        Invoke(nameof(StartNewAttack), _delayBeforeFirstAttackAfterPhaseTransition);
     }
 
     private void ApplyPoolChangesAfterTransition()
@@ -142,10 +151,21 @@ public class GenericBoss : BossBehavior
     {
         if (_currentAttack != null)
         {
-            _currentAttack.OnAttackFinished.RemoveListener(OnAttackFinished);
-            _currentAttack.StopAttackEarly();
+            _currentAttack.OnActionFinished.RemoveListener(OnAttackFinished);
+            _currentAttack.StopAction();
         }
         Invoke(nameof(StartNewAttack), _currentAttack.DelayAfterAttack);
+    }
+
+    private void OnPhaseChangeActionFinished()
+    {
+        if(_currentPhaseTransitionAction != null)
+        {
+            _currentPhaseTransitionAction.OnActionFinished.RemoveListener(OnPhaseChangeActionFinished);
+            _currentPhaseTransitionAction.StopAction();
+            _currentPhaseTransitionAction = null;
+        }
+        Invoke(nameof(StartNewAttack), _delayBeforeFirstAttackAfterPhaseTransition);
     }
 
     private int GetIndexOfAttackInPhaseAttacks(BossAttack attack)

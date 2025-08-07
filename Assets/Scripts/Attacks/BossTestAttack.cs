@@ -16,7 +16,7 @@ public class BossTestAttack : BossAttack
     List<Coroutine> _shootingCoroutines = new List<Coroutine>();
     List<float> _shootingAngles = new List<float>();
 
-    public override void StartAttack()
+    public override void StartAction()
     {
         int randomDirection = Random.Range(0, 2);
         _rotatingClockWise = randomDirection == 0;
@@ -30,7 +30,7 @@ public class BossTestAttack : BossAttack
         }
     }
 
-    public override void StopAttackEarly()
+    public override void StopAction()
     {
         StopAllCoroutines();
     }
@@ -56,7 +56,7 @@ public class BossTestAttack : BossAttack
         }
 
         _shootingAngles.Clear();
-        OnAttackFinished.Invoke();
+        OnActionFinished.Invoke();
         StopAllCoroutines();
     }
 
