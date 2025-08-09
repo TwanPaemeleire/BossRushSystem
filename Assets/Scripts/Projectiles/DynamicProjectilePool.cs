@@ -25,7 +25,7 @@ public class DynamicProjectilePool : MonoBehaviour
         Stack<Projectile> tempStack = new Stack<Projectile>(desiredSize);
         for(int i = 0; i < desiredSize; ++i)
         {
-            tempStack.Push(Get(1.0f, 1.0f, Vector2.zero));
+            tempStack.Push(Get(1.0f, 1.0f, Vector3.zero, Vector2.zero));
         }
         for (int i = 0; i < desiredSize; ++i)
         {
@@ -44,15 +44,16 @@ public class DynamicProjectilePool : MonoBehaviour
         _inactiveInstances.Push(projectile);
     }
 
-    public Projectile Get(float speedMultiplier, float damageMultiplier, Vector2 shotDirection)
+    public Projectile Get(float speedMultiplier, float damageMultiplier, Vector3 spawnPosition, Vector2 shotDirection)
     {
         if (_inactiveInstances.Count == 0) CreateInstance();
         var projectile = _inactiveInstances.Pop();
         projectile.SpeedMultiplier = speedMultiplier;
         projectile.DamageMultiplier = damageMultiplier;
+        projectile.transform.position = spawnPosition;
         projectile.ShotDirection = shotDirection;
-        projectile.Initialize();
         projectile.gameObject.SetActive(true);
+        projectile.Initialize();
         return projectile;
     }
 

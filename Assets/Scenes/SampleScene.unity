@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 543081130}
   - component: {fileID: 543081131}
   m_Layer: 0
-  m_Name: AttackWithSubAttacksVariations
+  m_Name: AttackWithSubAttacksVariation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,10 +765,10 @@ MonoBehaviour:
   _canExecuteConsecutive: 0
   _nextGuaranteedAttack: {fileID: 0}
   _delayAfterAttack: 1
-  _projectileToShoot: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+  _projectileToShoot: {fileID: 4706725717434427188, guid: 5455f3ded1c1e074588f8903c8296758, type: 3}
   _playerTransform: {fileID: 832665038}
   _projectilesPerRow: 10
-  _delayBetweenProjectilesInRow: 0.04
+  _delayBetweenProjectilesInRow: 0.2
   _amountOfRowsToShoot: 5
   _delayBetweenRows: 1.7
 --- !u!1 &1436870205
@@ -1073,7 +1073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToCreate.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToCreate.Array.data[0].Size
@@ -1081,7 +1081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToCreate.Array.data[1].Size
-      value: 990
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToCreate.Array.data[0].Prefab
@@ -1090,7 +1090,7 @@ PrefabInstance:
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToCreate.Array.data[1].Prefab
       value: 
-      objectReference: {fileID: 4706725717434427188, guid: 85cf0e7110f06fe4f8c6974355e39af4, type: 3}
+      objectReference: {fileID: 4706725717434427188, guid: 5455f3ded1c1e074588f8903c8296758, type: 3}
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: _poolsToModifyAfterPhaseChange.Array.size
       value: 1

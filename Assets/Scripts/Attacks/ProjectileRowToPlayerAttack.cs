@@ -29,8 +29,7 @@ public class ProjectileRowToPlayerAttack : BossAttack
             for(int projectileIdx = 0; projectileIdx < _projectilesPerRow; ++projectileIdx)
             {
                 Vector2 shotDirection = (playerPosition - transform.position).normalized;
-                var projectileObj = ProjectilePool.Instance.GetProjectile(_projectileToShoot, ProjectileSpeedMultiplier, ProjectileDamageMultiplier, shotDirection);
-                projectileObj.transform.position = transform.position;
+                var projectileObj = ProjectilePool.Instance.GetProjectile(_projectileToShoot, ProjectileSpeedMultiplier, ProjectileDamageMultiplier, transform.position, shotDirection);
                 if (projectileIdx == _projectilesPerRow -1) break;
                 yield return new WaitForSeconds(_delayBetweenProjectilesInRow);
             }
