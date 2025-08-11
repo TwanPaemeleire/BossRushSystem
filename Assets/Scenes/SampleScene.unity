@@ -2243,6 +2243,9 @@ MonoBehaviour:
   _playerShootingStats:
     FireRatePerSecond: 5
     DefaultShotSpeed: 0
+  _shotUpgrades:
+  - {fileID: 11400000, guid: 2e042e9d2125c90498eb4fee62db23f1, type: 2}
+  - {fileID: 11400000, guid: 2e042e9d2125c90498eb4fee62db23f1, type: 2}
 --- !u!1 &1960034300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2442,10 @@ PrefabInstance:
     - target: {fileID: 3130395684313142010, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130395684313142010, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5103227559274840795, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: m_LocalPosition.x

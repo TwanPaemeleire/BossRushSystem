@@ -8,12 +8,23 @@ public struct PlayerShootingStats
     public float DefaultShotSpeed;
 }
 
-public struct ShotData
+public class ShotData
 {
     public GameObject Prefab;
     public Vector3 Position;
     public Vector3 Direction;
     public float BaseSpeed;
+
+    public ShotData Clone()
+    {
+        return new ShotData
+        {
+            Prefab = this.Prefab,
+            Position = this.Position,
+            Direction = this.Direction,
+            BaseSpeed = this.BaseSpeed
+        };
+    }
 }
 
 public class PlayerShootingHandler : MonoBehaviour
@@ -21,7 +32,7 @@ public class PlayerShootingHandler : MonoBehaviour
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private PlayerShootingStats _playerShootingStats;
 
-    private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
+    [SerializeField] private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
     private List<ShotData> _dataToShoot = new List<ShotData>();
 
     private float _shootingDelay => 1.0f / _playerShootingStats.FireRatePerSecond;
@@ -54,5 +65,6 @@ public class PlayerShootingHandler : MonoBehaviour
         {
             PlayerProjectile projectile = ProjectilePool.Instance.GetProjectile(shotData.Prefab, 1.0f, 1.0f, shotData.Position, shotData.Direction) as PlayerProjectile;
         }
+        _dataToShoot.Clear();
     }
 }

@@ -1,6 +1,4 @@
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "ProjectileUpgrade", menuName = "Upgrades/ProjectileUpgrade", order = 3)]
 public class ProjectileUpgradeSO : ScriptableObject
 {
     public virtual void OnSpawn(Projectile projectile) { }
