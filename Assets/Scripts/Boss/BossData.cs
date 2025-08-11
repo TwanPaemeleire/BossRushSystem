@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BossData", menuName = "Boss/BossVersion", order = 1)]
+[CreateAssetMenu(fileName = "BossData", menuName = "Boss/BossData", order = 1)]
 public class BossData : ScriptableObject
 {
     [HideInInspector]
