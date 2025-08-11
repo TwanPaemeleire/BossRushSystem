@@ -15,4 +15,6 @@ MonoBehaviour:
   UISprite: {fileID: 0}
   Name: Bobbie
   Description: 
-  Versions: []
+  Versions:
+  - {fileID: 11400000, guid: cdf78805f5f685442be4b026de5f747d, type: 2}
+  - {fileID: 11400000, guid: 101ac94040b6371439860ead1ade7274, type: 2}

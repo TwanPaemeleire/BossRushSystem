@@ -15,4 +15,5 @@ MonoBehaviour:
   UISprite: {fileID: 0}
   Name: Claire
   Description: 
-  Versions: []
+  Versions:
+  - {fileID: 11400000, guid: 79e5a626df8d49d47836dd8d3000eccf, type: 2}
