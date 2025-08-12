@@ -28,7 +28,7 @@ public class CardManager : MonoBehaviour
         {
             _allCards = new List<UpgradeCard>(handle.Result);
             SortCardsByRarity();
-            PickUpCard(_allCards[0]);
+            PickUpCard(GetRandomCard(new List<int> {5, 10, 20}));
         }
         else
         {
@@ -38,7 +38,11 @@ public class CardManager : MonoBehaviour
 
     private void SortCardsByRarity()
     {
-        _cardsByRarity = new List<List<int>>(_numberOfRarities);
+        _cardsByRarity = new List<List<int>>();
+        for(int i = 0; i < _numberOfRarities; ++i)
+        {
+            _cardsByRarity.Add(new List<int>());
+        }
         for(int cardIdx = 0; cardIdx < _allCards.Count; ++cardIdx)
         {
             _cardsByRarity[_allCards[cardIdx].Rarity - 1].Add(cardIdx);
@@ -106,6 +110,7 @@ public class CardManager : MonoBehaviour
             {
                 int numberOfCardsInRarity = _cardsByRarity[rarityWeightIdx].Count;
                 int randomCardIdx = Random.Range(0, numberOfCardsInRarity);
+                Debug.Log("PICKED UP CARD: " + _allCards[_cardsByRarity[rarityWeightIdx][randomCardIdx]].name);
                 return _allCards[_cardsByRarity[rarityWeightIdx][randomCardIdx]];
             }
         }

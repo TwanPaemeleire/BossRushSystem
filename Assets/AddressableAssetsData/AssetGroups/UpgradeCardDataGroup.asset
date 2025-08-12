@@ -15,8 +15,20 @@ MonoBehaviour:
   m_GroupName: UpgradeCardDataGroup
   m_GUID: b57e23ec78b0d9540bd58ae1fe1ba586
   m_SerializeEntries:
+  - m_GUID: 1defd3bd60b7fb84bbca51de71dee6eb
+    m_Address: Assets/Data/Cards/QuadShotCard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UpgradeCardData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 60986bcbd0875a64c94420ffb44155fe
     m_Address: Assets/Data/Cards/MultiShotCard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UpgradeCardData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d20d78c3cb7143949adbc1ce02947c71
+    m_Address: Assets/Data/Cards/TripleShotCard.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - UpgradeCardData
