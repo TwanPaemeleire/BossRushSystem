@@ -12,15 +12,23 @@ public abstract class Projectile : MonoBehaviour
     public GameObject OriginalPrefab { get { return _originalPrefab; } set { _originalPrefab = value; } }
     private Vector3 _shotDirection = Vector3.zero; 
     public Vector3 ShotDirection { get { return _shotDirection; } set { _shotDirection = value; } }
+    private bool _canHitBoss = false;
+    public bool CanHitBoss { get { return _canHitBoss; } set { _canHitBoss = value; } }
+    private bool _isBeingReleased = false;
 
-    public virtual void Initialize() { }
+    public virtual void Initialize() 
+    {
+        _canHitBoss = false;
+        _isBeingReleased = false;
+    }
     private void OnBecameInvisible()
     {
-        if(_destroyOnScreenLeft) DestroyBullet();
+        if(_destroyOnScreenLeft && !_isBeingReleased) DestroyProjectile();
     }
 
-    private void DestroyBullet()
+    public void DestroyProjectile()
     {
+        _isBeingReleased = true;
         ProjectilePool.Instance.ReleaseProjectile(_originalPrefab, this);
     }
 }

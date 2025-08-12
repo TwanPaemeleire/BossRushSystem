@@ -68,6 +68,7 @@ public class PlayerShootingHandler : MonoBehaviour
         foreach(var shotData in _dataToShoot)
         {
             PlayerProjectile projectile = ProjectilePool.Instance.GetProjectile(shotData.Prefab, 1.0f, 1.0f, shotData.Position, shotData.Direction) as PlayerProjectile;
+            projectile.CanHitBoss = true;
         }
         _dataToShoot.Clear();
     }

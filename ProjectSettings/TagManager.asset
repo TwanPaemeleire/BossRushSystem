@@ -50,5 +50,8 @@ TagManager:
   - name: Projectiles
     uniqueID: 290535329
     locked: 0
+  - name: Boss
+    uniqueID: 2884148513
+    locked: 0
   m_RenderingLayers:
   - Default
