@@ -1,5 +1,6 @@
 using UnityEngine;
-public class StatUpgradeSO : ScriptableObject
+public abstract class StatUpgradeSO : ScriptableObject
 {
-    public virtual void ApplyUpgrade() { }
+    public abstract void ApplyUpgrade();
+    public abstract void RemoveUpgrade();
 }

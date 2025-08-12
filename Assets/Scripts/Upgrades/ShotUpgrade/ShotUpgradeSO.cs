@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class ShotUpgradeSO : ScriptableObject
+public abstract class ShotUpgradeSO : ScriptableObject
 {
-    public virtual void ModifyShots(List<ShotData> shots) { }
+    public abstract void ModifyShots(List<ShotData> shots);
 }

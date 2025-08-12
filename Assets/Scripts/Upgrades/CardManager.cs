@@ -6,7 +6,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class CardManager : MonoBehaviour
 {
     private List<UpgradeCard> _allCards;
+    private List<List<int>> _cardsByRarity;
     private List<UpgradeCard> _heldCards = new List<UpgradeCard>();
+    private int _numberOfRarities = 3;
 
     private PlayerShootingHandler _playerShootingHandler;
 
@@ -25,11 +27,21 @@ public class CardManager : MonoBehaviour
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
             _allCards = new List<UpgradeCard>(handle.Result);
+            SortCardsByRarity();
             PickUpCard(_allCards[0]);
         }
         else
         {
             Debug.LogError("Loading BossData assets failed");
+        }
+    }
+
+    private void SortCardsByRarity()
+    {
+        _cardsByRarity = new List<List<int>>(_numberOfRarities);
+        for(int cardIdx = 0; cardIdx < _allCards.Count; ++cardIdx)
+        {
+            _cardsByRarity[_allCards[cardIdx].Rarity - 1].Add(cardIdx);
         }
     }
 
@@ -49,4 +61,55 @@ public class CardManager : MonoBehaviour
             statUpgrade.ApplyUpgrade();
         }
     }
+
+    public void RemoveCard(UpgradeCard card)
+    {
+        if(!_heldCards.Contains(card))
+        {
+            Debug.LogWarning("Trying to remove card that is not held");
+            return;
+        }
+        _heldCards.Remove(card);
+        foreach (var shotUpgrade in card.ShotUpgrades)
+        {
+            _playerShootingHandler.ShotUpgrades.Remove(shotUpgrade);
+        }
+        foreach (var projectileUpgrade in card.ProjectileUpgrades)
+        {
+            _playerShootingHandler.ProjectileUpgrades.Remove(projectileUpgrade);
+        }
+        foreach (var statUpgrade in card.StatUpgrades)
+        {
+            statUpgrade.RemoveUpgrade();
+        }
+    }
+
+    public UpgradeCard GetRandomCard(List<int> rarityWeights)
+    {
+        if(rarityWeights.Count > _numberOfRarities)
+        {
+            Debug.LogWarning("Number of rarity weights passed exceeds number of rarities");
+            return null;
+        }
+        int totalWeight = 0;
+        foreach(var rarityWeight in rarityWeights)
+        {
+            totalWeight += rarityWeight;
+        }
+
+        int randomNumber = Random.Range(0, totalWeight);
+        int currentWeightSum = 0;
+        for(int rarityWeightIdx = 0; rarityWeightIdx < rarityWeights.Count; ++ rarityWeightIdx)
+        {
+            currentWeightSum += rarityWeights[rarityWeightIdx];
+            if(randomNumber < currentWeightSum)
+            {
+                int numberOfCardsInRarity = _cardsByRarity[rarityWeightIdx].Count;
+                int randomCardIdx = Random.Range(0, numberOfCardsInRarity);
+                return _allCards[_cardsByRarity[rarityWeightIdx][randomCardIdx]];
+            }
+        }
+        return null;
+    }
+
 }
