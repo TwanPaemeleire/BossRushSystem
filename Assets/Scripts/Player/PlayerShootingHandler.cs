@@ -32,8 +32,12 @@ public class PlayerShootingHandler : MonoBehaviour
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private PlayerShootingStats _playerShootingStats;
 
-    [SerializeField] private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
+    private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
+    public List<ShotUpgradeSO> ShotUpgrades {  get { return _shotUpgrades; } set{ _shotUpgrades = value; } }
     private List<ShotData> _dataToShoot = new List<ShotData>();
+
+    [SerializeField] private List<ProjectileUpgradeSO> _projectileUpgrades = new List<ProjectileUpgradeSO>();
+    public List<ProjectileUpgradeSO> ProjectileUpgrades { get { return _projectileUpgrades; } set { _projectileUpgrades = value; } }
 
     private float _shootingDelay => 1.0f / _playerShootingStats.FireRatePerSecond;
     private void Start()

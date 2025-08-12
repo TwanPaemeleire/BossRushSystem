@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UpgradeCardDataGroup
+  m_EditorClassIdentifier: 
+  m_GroupName: UpgradeCardDataGroup
+  m_GUID: b57e23ec78b0d9540bd58ae1fe1ba586
+  m_SerializeEntries:
+  - m_GUID: 60986bcbd0875a64c94420ffb44155fe
+    m_Address: Assets/Data/Cards/MultiShotCard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UpgradeCardData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 43177df18b9333a449d0af7991a1dcce, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b25de09a4137c204eb363bc20f7cd5e4, type: 2}
+    - {fileID: 11400000, guid: 0db601c1e9a51e6449e158a4549682ca, type: 2}

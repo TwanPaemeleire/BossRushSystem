@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MultiShotUpgrade", menuName = "Upgrades/MultiShotUpgrade", order = 1)]
+[CreateAssetMenu(fileName = "MultiShotUpgrade", menuName = "Upgrades/MultiShotUpgrade", order = 2)]
 public class MultiShotUpgrade : ShotUpgradeSO
 {
     [SerializeField] private int _amountOfExtraShots = 1;
