@@ -10,8 +10,8 @@ public class BossCollisionHandler : MonoBehaviour
         {
             if(projectile.CanHitBoss)
             {
-                Debug.Log("Player projectile hit boss");
                 projectile.DestroyProjectile();
+                _bossHealth.TakeDamage(1.0f);
             }
         }
     }
