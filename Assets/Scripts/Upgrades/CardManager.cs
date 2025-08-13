@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -7,12 +8,13 @@ public class CardManager : MonoBehaviour
 {
     private List<UpgradeCard> _allCards;
     private List<List<int>> _cardsByRarity = new List<List<int>>();
-    private List<UpgradeCard> _heldCards = new List<UpgradeCard>();
+    private List<int> _heldCards = new List<int>();
     private int _numberOfRarities = 3;
 
     private Dictionary<int, List<int>> _cardDependencies = new Dictionary<int, List<int>>(); // Dependencies of card
     private Dictionary<int, List<int>> _reverseCardDependencies = new Dictionary<int, List<int>>(); // Cards that depend on this card
     private HashSet<int> _availableCards = new HashSet<int>();
+    private List<List<int>> _availableCardsByRarity = new List<List<int>>();
 
     private PlayerShootingHandler _playerShootingHandler;
 
@@ -32,7 +34,7 @@ public class CardManager : MonoBehaviour
             _allCards = new List<UpgradeCard>(handle.Result);
             SortCardsByRarityAndDependencies();
             InitializeAvailableCards();
-            PickUpCard(GetRandomCard(new List<int> {5, 10, 20}));
+            //PickUpCard(GetRandomCard(new List<int> {5, 10, 20}));
         }
         else
         {
@@ -76,11 +78,18 @@ public class CardManager : MonoBehaviour
     private void InitializeAvailableCards()
     {
         _availableCards.Clear();
+        _availableCardsByRarity.Clear();
+        for (int i = 0; i < _numberOfRarities; ++i)
+        {
+            _availableCardsByRarity.Add(new List<int>());
+        }
+
         for (int cardIdx = 0; cardIdx < _allCards.Count; cardIdx++)
         {
             if (!_cardDependencies.ContainsKey(cardIdx))
             {
                 _availableCards.Add(cardIdx);
+                _availableCardsByRarity[_allCards[cardIdx].Rarity - 1].Add(cardIdx);
             }
         }
     }
@@ -89,12 +98,12 @@ public class CardManager : MonoBehaviour
     {
         if (!_reverseCardDependencies.ContainsKey(pickedUpIdx)) return; // No cards rely on this card
 
-        foreach(var dependantCardIdx in _reverseCardDependencies[pickedUpIdx]) // Loop over all cards that rely on this card
+        foreach(var dependentCardIdx in _reverseCardDependencies[pickedUpIdx]) // Loop over all cards that rely on this card
         {
             bool allDependenciesCollected = true;
-            foreach(var dependency in _cardDependencies[dependantCardIdx]) // Loop over all dependencies of card that relies on this card
+            foreach(var dependency in _cardDependencies[dependentCardIdx]) // Loop over all dependencies of card that relies on this card
             {
-                if(!_heldCards.Contains(_allCards[dependency])) // Check if holding current dependency to check
+                if(!_heldCards.Contains(dependency)) // Check if holding current dependency to check
                 {
                     allDependenciesCollected = false;
                     break;
@@ -102,14 +111,16 @@ public class CardManager : MonoBehaviour
             }
             if(allDependenciesCollected) // All dependency cards for this card are held by the player
             {
-                _availableCards.Add(dependantCardIdx);
+                _availableCards.Add(dependentCardIdx);
+                _availableCardsByRarity[_allCards[dependentCardIdx].Rarity - 1].Add(dependentCardIdx);
             }
         }
     }
 
     public void PickUpCard(UpgradeCard card)
     {
-        _heldCards.Add(card);
+        int index = _allCards.IndexOf(card);
+        _heldCards.Add(index);
         foreach(var shotUpgrade in card.ShotUpgrades)
         {
             _playerShootingHandler.ShotUpgrades.Add(shotUpgrade);
@@ -123,17 +134,18 @@ public class CardManager : MonoBehaviour
             statUpgrade.ApplyUpgrade();
         }
 
-        CheckNewUnlocks(_allCards.IndexOf(card));
+        CheckNewUnlocks(index);
     }
 
     public void RemoveCard(UpgradeCard card)
     {
-        if(!_heldCards.Contains(card))
+        int index = _allCards.IndexOf(card);
+        if(!_heldCards.Contains(index))
         {
             Debug.LogWarning("Trying to remove card that is not held");
             return;
         }
-        _heldCards.Remove(card);
+        _heldCards.Remove(index);
         foreach (var shotUpgrade in card.ShotUpgrades)
         {
             _playerShootingHandler.ShotUpgrades.Remove(shotUpgrade);
@@ -168,10 +180,15 @@ public class CardManager : MonoBehaviour
             currentWeightSum += rarityWeights[rarityWeightIdx];
             if(randomNumber < currentWeightSum)
             {
-                int numberOfCardsInRarity = _cardsByRarity[rarityWeightIdx].Count;
+                int numberOfCardsInRarity = _availableCardsByRarity[rarityWeightIdx].Count;
+                if(numberOfCardsInRarity < 0)
+                {
+                    Debug.Log("Selected card rarity index: " + rarityWeightIdx + "has no more available cards");
+                    continue;
+                }
                 int randomCardIdx = Random.Range(0, numberOfCardsInRarity);
-                Debug.Log("PICKED UP CARD: " + _allCards[_cardsByRarity[rarityWeightIdx][randomCardIdx]].name);
-                return _allCards[_cardsByRarity[rarityWeightIdx][randomCardIdx]];
+                Debug.Log("PICKED UP CARD: " + _allCards[_availableCardsByRarity[rarityWeightIdx][randomCardIdx]].name);
+                return _allCards[_availableCardsByRarity[rarityWeightIdx][randomCardIdx]];
             }
         }
         return null;
