@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HomingProjectileUpgrade", menuName = "Upgrades/ProjectileUpgrades/HomingProjectileUpgrade")]
 public class HomingProjectile : ProjectileUpgradeSO
 {
-    [SerializeField] private float _treshHoldToTrigger = 1.0f;
     private Transform _bossTransform;
     public override void OnSpawn(PlayerProjectile projectile, PlayerProjectileStats stats)
     {
@@ -23,7 +22,7 @@ public class HomingProjectile : ProjectileUpgradeSO
     {
         if (_bossTransform == null) return;
         float distance = Vector2.Distance(_bossTransform.position, projectile.transform.position);
-        if (distance > _treshHoldToTrigger) return;
+        if (distance > stats.HomingTriggerDistance) return;
         Vector2 distanceToBoss = (_bossTransform.position - projectile.transform.position);
         if (distanceToBoss.x < 0.0f) return;
         if (Mathf.Abs(distanceToBoss.y) < 0.1f)

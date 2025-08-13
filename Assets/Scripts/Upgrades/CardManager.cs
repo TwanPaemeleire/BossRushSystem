@@ -6,9 +6,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class CardManager : MonoBehaviour
 {
     private List<UpgradeCard> _allCards;
-    private List<List<int>> _cardsByRarity;
+    private List<List<int>> _cardsByRarity = new List<List<int>>();
     private List<UpgradeCard> _heldCards = new List<UpgradeCard>();
     private int _numberOfRarities = 3;
+
+    private Dictionary<int, List<int>> _cardDependencies = new Dictionary<int, List<int>>(); // Dependencies of card
+    private Dictionary<int, List<int>> _reverseCardDependencies = new Dictionary<int, List<int>>(); // Cards that depend on this card
+    private HashSet<int> _availableCards = new HashSet<int>();
 
     private PlayerShootingHandler _playerShootingHandler;
 
@@ -19,7 +23,6 @@ public class CardManager : MonoBehaviour
 
     public async void InitializeCards()
     {
-        // Fill up all cards
         _playerShootingHandler = FindAnyObjectByType<PlayerShootingHandler>();
 
         AsyncOperationHandle<IList<UpgradeCard>> handle = Addressables.LoadAssetsAsync<UpgradeCard>("UpgradeCardData", null);
@@ -27,7 +30,8 @@ public class CardManager : MonoBehaviour
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
             _allCards = new List<UpgradeCard>(handle.Result);
-            SortCardsByRarity();
+            SortCardsByRarityAndDependencies();
+            InitializeAvailableCards();
             PickUpCard(GetRandomCard(new List<int> {5, 10, 20}));
         }
         else
@@ -36,16 +40,70 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void SortCardsByRarity()
+    private void SortCardsByRarityAndDependencies()
     {
-        _cardsByRarity = new List<List<int>>();
-        for(int i = 0; i < _numberOfRarities; ++i)
+        _cardsByRarity.Clear();
+        _cardDependencies.Clear();
+        _reverseCardDependencies.Clear();
+
+        for (int i = 0; i < _numberOfRarities; ++i)
         {
             _cardsByRarity.Add(new List<int>());
         }
         for(int cardIdx = 0; cardIdx < _allCards.Count; ++cardIdx)
         {
-            _cardsByRarity[_allCards[cardIdx].Rarity - 1].Add(cardIdx);
+            UpgradeCard currentCard = _allCards[cardIdx];
+            _cardsByRarity[currentCard.Rarity - 1].Add(cardIdx);
+            if (currentCard.DependencyCards.Count > 0)
+            {
+                List<int> dependencyIndices = new List<int>();
+                foreach(var dependency in currentCard.DependencyCards)
+                {
+                    int dependencyIdx = _allCards.IndexOf(dependency);
+                    dependencyIndices.Add(dependencyIdx);
+
+                    // Build reverse dependencies
+                    if(!_reverseCardDependencies.ContainsKey(dependencyIdx))
+                    {
+                        _reverseCardDependencies[dependencyIdx] = new List<int>();
+                    }
+                    _reverseCardDependencies[dependencyIdx].Add(cardIdx);
+                }
+                _cardDependencies[cardIdx] = dependencyIndices;
+            }
+        }
+    }
+    private void InitializeAvailableCards()
+    {
+        _availableCards.Clear();
+        for (int cardIdx = 0; cardIdx < _allCards.Count; cardIdx++)
+        {
+            if (!_cardDependencies.ContainsKey(cardIdx))
+            {
+                _availableCards.Add(cardIdx);
+            }
+        }
+    }
+
+    private void CheckNewUnlocks(int pickedUpIdx)
+    {
+        if (!_reverseCardDependencies.ContainsKey(pickedUpIdx)) return; // No cards rely on this card
+
+        foreach(var dependantCardIdx in _reverseCardDependencies[pickedUpIdx]) // Loop over all cards that rely on this card
+        {
+            bool allDependenciesCollected = true;
+            foreach(var dependency in _cardDependencies[dependantCardIdx]) // Loop over all dependencies of card that relies on this card
+            {
+                if(!_heldCards.Contains(_allCards[dependency])) // Check if holding current dependency to check
+                {
+                    allDependenciesCollected = false;
+                    break;
+                }
+            }
+            if(allDependenciesCollected) // All dependency cards for this card are held by the player
+            {
+                _availableCards.Add(dependantCardIdx);
+            }
         }
     }
 
@@ -64,6 +122,8 @@ public class CardManager : MonoBehaviour
         {
             statUpgrade.ApplyUpgrade();
         }
+
+        CheckNewUnlocks(_allCards.IndexOf(card));
     }
 
     public void RemoveCard(UpgradeCard card)

@@ -9,4 +9,5 @@ public class UpgradeCard : ScriptableObject
     public List<ShotUpgradeSO> ShotUpgrades;
     public List<ProjectileUpgradeSO> ProjectileUpgrades;
     public List<StatUpgradeSO> StatUpgrades;
+    public List<UpgradeCard> DependencyCards;
 }
