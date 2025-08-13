@@ -39,6 +39,8 @@ public class PlayerShootingHandler : MonoBehaviour
     [SerializeField] private List<ProjectileUpgradeSO> _projectileUpgrades = new List<ProjectileUpgradeSO>();
     public List<ProjectileUpgradeSO> ProjectileUpgrades { get { return _projectileUpgrades; } set { _projectileUpgrades = value; } }
 
+    [SerializeField] private PlayerProjectileStats _playerProjectileStats;
+
     private float _shootingDelay => 1.0f / _playerShootingStats.FireRatePerSecond;
     private void Start()
     {
@@ -69,6 +71,8 @@ public class PlayerShootingHandler : MonoBehaviour
         {
             PlayerProjectile projectile = ProjectilePool.Instance.GetProjectile(shotData.Prefab, 1.0f, 1.0f, shotData.Position, shotData.Direction) as PlayerProjectile;
             projectile.CanHitBoss = true;
+            projectile.Upgrades = _projectileUpgrades;
+            projectile.PlayerProjectileStats = _playerProjectileStats;
         }
         _dataToShoot.Clear();
     }
