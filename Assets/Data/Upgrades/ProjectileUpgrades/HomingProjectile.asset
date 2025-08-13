@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ddd24ec014379d469c4b07f617d75b9, type: 3}
   m_Name: HomingProjectile
   m_EditorClassIdentifier: 
+  _treshHoldToTrigger: 3

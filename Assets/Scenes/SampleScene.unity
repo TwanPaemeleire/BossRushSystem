@@ -2270,7 +2270,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e8d1174dc535bdd498988c4fff034823, type: 2}
   _playerProjectileStats:
     MovementSpeed: 5
-    HomingStrenght: 5
+    HomingStrenght: 0.2
     Damage: 1
 --- !u!1 &1960034300
 GameObject:
@@ -2568,6 +2568,10 @@ PrefabInstance:
     - target: {fileID: 8533474080751931395, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
       propertyPath: OnBossFightFinished.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9125588957901199457, guid: ccc31da61a5a29c44b598a9f960137fd, type: 3}
+      propertyPath: m_Radius
+      value: 0.09
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,8 +1,10 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HomingProjectileUpgrade", menuName = "Upgrades/ProjectileUpgrades/HomingProjectileUpgrade")]
 public class HomingProjectile : ProjectileUpgradeSO
 {
+    [SerializeField] private float _treshHoldToTrigger = 1.0f;
     private Transform _bossTransform;
     public override void OnSpawn(PlayerProjectile projectile, PlayerProjectileStats stats)
     {
@@ -12,14 +14,24 @@ public class HomingProjectile : ProjectileUpgradeSO
         {
             _bossTransform = boss.transform;
         }
+        else
+        {
+            _bossTransform = null;
+        }
     }
     public override void OnUpdate(PlayerProjectile projectile, PlayerProjectileStats stats)
     {
-        Vector2 toTarget = (_bossTransform.position - projectile.transform.position).normalized;
-        if(toTarget.x > 0.0f)
+        if (_bossTransform == null) return;
+        float distance = Vector2.Distance(_bossTransform.position, projectile.transform.position);
+        if (distance > _treshHoldToTrigger) return;
+        Vector2 distanceToBoss = (_bossTransform.position - projectile.transform.position);
+        if (distanceToBoss.x < 0.0f) return;
+        if (Mathf.Abs(distanceToBoss.y) < 0.1f)
         {
-            Vector2 dirWithStrenght = toTarget *= stats.HomingStrenght * Time.deltaTime;
-            projectile.transform.position += new Vector3(0.0f, dirWithStrenght.y, 0.0f);
-        }   
+            projectile.CurrentDirection = new Vector2(projectile.CurrentDirection.x, 0.0f);
+            return;
+        }
+        float yDir = stats.HomingStrenght * ((distanceToBoss.y > 0.0f) ? 1 : -1);
+        projectile.CurrentDirection= new Vector2(projectile.CurrentDirection.x, yDir);
     }
 }
