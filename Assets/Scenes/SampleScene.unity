@@ -2025,12 +2025,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1928578242}
+  - component: {fileID: 1928578248}
   - component: {fileID: 1928578245}
   - component: {fileID: 1928578247}
   - component: {fileID: 1928578243}
   - component: {fileID: 1928578244}
   - component: {fileID: 1928578246}
-  - component: {fileID: 1928578248}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2131,8 +2131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65667a603604f6846b1e92662a4d2272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMovementSpeed: 5
-  _focusMovementSpeed: 1.5
   _mainSpriteRenderer: {fileID: 1214178405}
 --- !u!114 &1928578246
 MonoBehaviour:
@@ -2208,7 +2206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69e939d1e2c4734cb8c45c5d7cd98df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 5
   _healthSlider: {fileID: 0}
   OnDamageTaken:
     m_PersistentCalls:
@@ -2231,12 +2228,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6844312abf20514a960f80c8a126d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 5
-  HealthComponent: {fileID: 1928578247}
-  ProjectileMovementSpeed: 5
-  ProjectileDamage: 1
-  HomingTriggerDistance: 3
-  HomingStrenght: 1
+  _baseStats:
+    MovementSpeed: 5
+    FocusModeMovementSpeed: 2
+    MaxHealth: 10
+    FireRatePerSecond: 5
+  _projectileStats:
+    ProjectileMovementSpeed: 5
+    ProjectileDamage: 1
+    HomingTriggerDistance: 3
+    HomingStrenght: 1
 --- !u!1 &1956122188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,17 +2283,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 4706725717434427188, guid: d507d2ef0f3137042bac58c63eaf0e7c, type: 3}
-  _playerShootingStats:
-    FireRatePerSecond: 5
-    DefaultShotSpeed: 0
   _shotUpgrades: []
   _projectileUpgrades:
   - {fileID: 11400000, guid: e8d1174dc535bdd498988c4fff034823, type: 2}
-  _playerProjectileStats:
-    MovementSpeed: 5
-    HomingTriggerDistance: 3
-    HomingStrenght: 0.2
-    Damage: 1
 --- !u!1 &1960034300
 GameObject:
   m_ObjectHideFlags: 0

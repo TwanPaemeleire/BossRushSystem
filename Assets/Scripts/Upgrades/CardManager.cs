@@ -98,6 +98,9 @@ public class CardManager : MonoBehaviour
 
         foreach(var dependentCardIdx in _reverseCardDependencies[pickedUpIdx]) // Loop over all cards that rely on this card
         {
+            if (_availableCards.Contains(dependentCardIdx)) continue;
+            if (_heldCards.Contains(dependentCardIdx) && !_allCards[dependentCardIdx].CanBeCollectedMultipleTimes) continue; // Already held and not stackable
+
             bool allDependenciesCollected = true;
             foreach(var dependency in _cardDependencies[dependentCardIdx]) // Loop over all dependencies of card that relies on this card
             {
@@ -115,9 +118,40 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void CheckNewReLocks(int droppedIdx)
+    {
+        if (!_reverseCardDependencies.ContainsKey(droppedIdx)) return; // No cards rely on this card
+        foreach (var dependentCardIdx in _reverseCardDependencies[droppedIdx]) // Loop over all cards that rely on this card
+        {
+            if(!_availableCards.Contains(dependentCardIdx)) continue;
+            bool allDependenciesCollected = true;
+            foreach (var dependency in _cardDependencies[dependentCardIdx]) // Loop over all dependencies of card that relies on this card
+            {
+                if (!_heldCards.Contains(dependency)) // Check if holding current dependency to check
+                {
+                    allDependenciesCollected = false;
+                    break;
+                }
+            }
+            if(!allDependenciesCollected) // Not all dependency cards for this card are held by the player
+            {
+                _availableCards.Remove(dependentCardIdx);
+                _availableCardsByRarity[_allCards[dependentCardIdx].Rarity - 1].Remove(dependentCardIdx);
+                CheckNewReLocks(dependentCardIdx);
+            }
+        }
+    }
+
     public void PickUpCard(UpgradeCard card)
     {
         int index = _allCards.IndexOf(card);
+
+        if (!card.CanBeCollectedMultipleTimes)
+        {
+            _availableCards.Remove(index);
+            _availableCardsByRarity[card.Rarity - 1].Remove(index);
+        }
+
         _heldCards.Add(index);
         foreach(var shotUpgrade in card.ShotUpgrades)
         {
@@ -156,6 +190,14 @@ public class CardManager : MonoBehaviour
         {
             statUpgrade.RemoveUpgrade();
         }
+
+        if (!card.CanBeCollectedMultipleTimes && !_availableCards.Contains(index))
+        {
+            _availableCards.Add(index);
+            _availableCardsByRarity[card.Rarity - 1].Add(index);
+        }
+
+        CheckNewReLocks(index);
     }
 
     public UpgradeCard GetRandomCard(List<int> rarityWeights)
@@ -191,5 +233,4 @@ public class CardManager : MonoBehaviour
         }
         return null;
     }
-
 }

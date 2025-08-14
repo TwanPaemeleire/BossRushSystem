@@ -6,6 +6,7 @@ public class UpgradeCard : ScriptableObject
 {
     [Range(1, 3)]
     public int Rarity;
+    public bool CanBeCollectedMultipleTimes = true;
     public List<ShotUpgradeSO> ShotUpgrades;
     public List<ProjectileUpgradeSO> ProjectileUpgrades;
     public List<StatUpgradeSO> StatUpgrades;
