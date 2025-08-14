@@ -9,9 +9,10 @@ public class PlayerProjectile : Projectile
     public PlayerProjectileStats PlayerProjectileStats { get { return _playerProjectileStats; } set { _playerProjectileStats = value; } }
     private Vector3 _currentDirection;
     public Vector2 CurrentDirection { get { return _currentDirection; } set { _currentDirection = value; } }
+
     private void Update()
     {
-        transform.position += _playerProjectileStats.MovementSpeed * SpeedMultiplier * Time.deltaTime * _currentDirection;
+        transform.position += _playerProjectileStats.ProjectileMovementSpeed * SpeedMultiplier * Time.deltaTime * _currentDirection;
         foreach(var upgrade in _upgrades)
         {
             upgrade.OnUpdate(this, _playerProjectileStats); 

@@ -1,13 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
-public struct PlayerShootingStats
-{
-    public float FireRatePerSecond;
-    public float DefaultShotSpeed;
-}
-
 public class ShotData
 {
     public GameObject Prefab;
@@ -30,20 +23,19 @@ public class ShotData
 public class PlayerShootingHandler : MonoBehaviour
 {
     [SerializeField] private GameObject _projectilePrefab;
-    [SerializeField] private PlayerShootingStats _playerShootingStats;
 
     [SerializeField] private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
     private List<ShotData> _dataToShoot = new List<ShotData>();
     [SerializeField] private List<ProjectileUpgradeSO> _projectileUpgrades = new List<ProjectileUpgradeSO>();
 
-    [SerializeField] private PlayerProjectileStats _playerProjectileStats;
-
     public List<ShotUpgradeSO> ShotUpgrades {get {return _shotUpgrades;} set { _shotUpgrades = value; } }
     public List<ProjectileUpgradeSO> ProjectileUpgrades { get { return _projectileUpgrades; } set { _projectileUpgrades = value; } }
 
-    private float _shootingDelay => 1.0f / _playerShootingStats.FireRatePerSecond;
+    private PlayerStatsHolder _playerStatsHolder;
+    private float _shootingDelay => 1.0f / _playerStatsHolder.PlayerStats.FireRatePerSecond;
     private void Start()
     {
+        _playerStatsHolder = GetComponentInParent<PlayerStatsHolder>();
         StartShooting();
     }
 
@@ -72,7 +64,7 @@ public class PlayerShootingHandler : MonoBehaviour
             PlayerProjectile projectile = ProjectilePool.Instance.GetProjectile(shotData.Prefab, 1.0f, 1.0f, shotData.Position, shotData.Direction) as PlayerProjectile;
             projectile.CanHitBoss = true;
             projectile.Upgrades = _projectileUpgrades;
-            projectile.PlayerProjectileStats = _playerProjectileStats;
+            projectile.PlayerProjectileStats = _playerStatsHolder.ProjectileStats;
         }
         _dataToShoot.Clear();
     }

@@ -6,12 +6,12 @@ public class BossCollisionHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.TryGetComponent<Projectile>(out Projectile projectile))
+        if(other.TryGetComponent<PlayerProjectile>(out PlayerProjectile playerProjectile))
         {
-            if(projectile.CanHitBoss)
+            if(playerProjectile.CanHitBoss)
             {
-                projectile.DestroyProjectile();
-                _bossHealth.TakeDamage(1.0f);
+                _bossHealth.TakeDamage(playerProjectile.PlayerProjectileStats.ProjectileDamage * playerProjectile.DamageMultiplier);
+                playerProjectile.DestroyProjectile();
             }
         }
     }

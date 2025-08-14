@@ -1,26 +1,29 @@
-using System.ComponentModel;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private float _maxHealth;
     [SerializeField] private Slider _healthSlider;
-    private float _currenthHealth;
+    private float _currentHealth;
+    private PlayerBaseStats _playerBaseStats;
 
     public UnityEvent OnDamageTaken = new UnityEvent();
     public UnityEvent OnHealed = new UnityEvent();
     public UnityEvent OnDeath = new UnityEvent();
 
+    private void Start()
+    {
+        _playerBaseStats= GetComponent<PlayerStatsHolder>().PlayerStats;
+    }
+
     public void TakeDamage(float damage)
     {
-        _currenthHealth -= damage;
+        _currentHealth -= damage;
         OnDamageTaken.Invoke();
-        if(_currenthHealth <= 0 )
+        if(_currentHealth <= 0 )
         {
-            _currenthHealth = 0;
+            _currentHealth = 0;
             OnDeath.Invoke();
         }
         UpdateUI();
@@ -28,28 +31,28 @@ public class PlayerHealth : MonoBehaviour
 
     public void Heal(float healing)
     {
-        _currenthHealth = Mathf.Min(_currenthHealth + healing, _maxHealth);
+        _currentHealth = Mathf.Min(_currentHealth + healing, _playerBaseStats.MaxHealth);
         OnHealed.Invoke();
         UpdateUI();
     }
 
     public void IncreaseMaxHealth(float amountToAdd, bool increaseCurrentHealth = true)
     {
-        _maxHealth += amountToAdd;
+        _playerBaseStats.MaxHealth += amountToAdd;
         if(increaseCurrentHealth) Heal(amountToAdd);
         UpdateUI();
     }
 
     public void DecreaseMaxHealth(float amountToRemove, bool decreaseCurrentHealth = false)
     {
-        _maxHealth -= amountToRemove;
-        _currenthHealth -= amountToRemove;
+        _playerBaseStats.MaxHealth -= amountToRemove;
+        _currentHealth -= amountToRemove;
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        float healthPercentage = _currenthHealth / _maxHealth;
+        float healthPercentage = _currentHealth / _playerBaseStats.MaxHealth;
         _healthSlider.value = healthPercentage;
     }
 }
