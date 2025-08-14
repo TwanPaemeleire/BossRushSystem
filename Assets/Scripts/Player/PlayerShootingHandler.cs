@@ -32,14 +32,14 @@ public class PlayerShootingHandler : MonoBehaviour
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private PlayerShootingStats _playerShootingStats;
 
-    private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
-    public List<ShotUpgradeSO> ShotUpgrades {  get { return _shotUpgrades; } set{ _shotUpgrades = value; } }
+    [SerializeField] private List<ShotUpgradeSO> _shotUpgrades = new List<ShotUpgradeSO>();
     private List<ShotData> _dataToShoot = new List<ShotData>();
-
     [SerializeField] private List<ProjectileUpgradeSO> _projectileUpgrades = new List<ProjectileUpgradeSO>();
-    public List<ProjectileUpgradeSO> ProjectileUpgrades { get { return _projectileUpgrades; } set { _projectileUpgrades = value; } }
 
     [SerializeField] private PlayerProjectileStats _playerProjectileStats;
+
+    public List<ShotUpgradeSO> ShotUpgrades {get {return _shotUpgrades;} set { _shotUpgrades = value; } }
+    public List<ProjectileUpgradeSO> ProjectileUpgrades { get { return _projectileUpgrades; } set { _projectileUpgrades = value; } }
 
     private float _shootingDelay => 1.0f / _playerShootingStats.FireRatePerSecond;
     private void Start()
@@ -75,5 +75,17 @@ public class PlayerShootingHandler : MonoBehaviour
             projectile.PlayerProjectileStats = _playerProjectileStats;
         }
         _dataToShoot.Clear();
+    }
+
+    public void AddShotUpgrade(ShotUpgradeSO upgrade)
+    {
+        _shotUpgrades.Add(upgrade);
+        _shotUpgrades.Sort(new ShotUpgradeComparer());
+    }
+
+    public void AddProjectileUpgrade(ProjectileUpgradeSO upgrade)
+    {
+        _projectileUpgrades.Add(upgrade);
+        _projectileUpgrades.Sort(new ProjectileUpgradeComparer());
     }
 }

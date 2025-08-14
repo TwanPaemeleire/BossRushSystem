@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -34,7 +33,6 @@ public class CardManager : MonoBehaviour
             _allCards = new List<UpgradeCard>(handle.Result);
             SortCardsByRarityAndDependencies();
             InitializeAvailableCards();
-            //PickUpCard(GetRandomCard(new List<int> {5, 10, 20}));
         }
         else
         {
@@ -123,11 +121,11 @@ public class CardManager : MonoBehaviour
         _heldCards.Add(index);
         foreach(var shotUpgrade in card.ShotUpgrades)
         {
-            _playerShootingHandler.ShotUpgrades.Add(shotUpgrade);
+            _playerShootingHandler.AddShotUpgrade(shotUpgrade);
         }
         foreach(var projectileUpgrade in card.ProjectileUpgrades)
         {
-            _playerShootingHandler.ProjectileUpgrades.Add(projectileUpgrade);
+            _playerShootingHandler.AddProjectileUpgrade(projectileUpgrade);
         }
         foreach(var statUpgrade in card.StatUpgrades)
         {

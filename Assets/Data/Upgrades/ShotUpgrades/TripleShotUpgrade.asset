@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f111ca0bbd45140aae1314eacbb2c2, type: 3}
   m_Name: TripleShotUpgrade
   m_EditorClassIdentifier: 
+  Priority: 5
   _amountOfExtraShots: 3
   _minShootingAngle: -11.25
   _maxShootingAngle: 11.25

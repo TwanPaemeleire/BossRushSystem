@@ -2266,10 +2266,12 @@ MonoBehaviour:
   _playerShootingStats:
     FireRatePerSecond: 5
     DefaultShotSpeed: 0
+  _shotUpgrades: []
   _projectileUpgrades:
   - {fileID: 11400000, guid: e8d1174dc535bdd498988c4fff034823, type: 2}
   _playerProjectileStats:
     MovementSpeed: 5
+    HomingTriggerDistance: 3
     HomingStrenght: 0.2
     Damage: 1
 --- !u!1 &1960034300
