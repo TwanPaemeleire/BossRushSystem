@@ -5,10 +5,13 @@ public class PlayerStatsHolder : MonoBehaviour
     [SerializeField] private PlayerBaseStats _baseStats;
     public PlayerBaseStats PlayerStats { get { return _baseStats; } set { _baseStats = value; } }
     private PlayerBaseStats _originalBaseStats;
+    private PlayerBaseStats _snapShotBaseStats = null;
 
     [SerializeField] private PlayerProjectileStats _projectileStats;
     public PlayerProjectileStats ProjectileStats { get { return _projectileStats; } set { _projectileStats = value; } }
     private PlayerProjectileStats _originalProjectileStats;
+    private PlayerProjectileStats _snapShotProjectileStats = null;
+
 
     private void Awake()
     {
@@ -20,6 +23,23 @@ public class PlayerStatsHolder : MonoBehaviour
     {
         _baseStats = _originalBaseStats.Clone();
         _projectileStats = _originalProjectileStats.Clone();
+    }
+
+    public void TakeSnapShot()
+    {
+        _snapShotBaseStats = _baseStats.Clone();
+        _snapShotProjectileStats = _projectileStats.Clone();
+    }
+
+    public void RestoreSnapShot()
+    { 
+        if(_snapShotBaseStats == null || _snapShotProjectileStats == null)
+        {
+            Debug.LogWarning("No snapshot to restore");
+            return;
+        }
+        _baseStats = _snapShotBaseStats.Clone();
+        _projectileStats = _snapShotProjectileStats.Clone();
     }
 }
 
